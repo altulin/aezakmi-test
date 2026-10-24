@@ -1,0 +1,74 @@
+@use 'functions' as *;
+
+// Design tokens from the Figma mockup (Test Task, desktop 1440).
+// Sizes that should scale with the user's font setting are in rem;
+// borders, radii and shadows stay in px.
+:root {
+  // Text
+  --color-text: #18184c;
+  --color-text-muted: #8e93a1;
+  --color-text-inverse: #ffffff;
+
+  // Backgrounds
+  --color-bg: #f9f9fd;
+  --color-bg-auth: #efeff4;
+  --color-surface: #ffffff;
+  --color-field: #f2f3f9;
+  --color-border: #e6e7ed;
+  --color-divider: #e3e4ea;
+
+  // Brand / accent
+  --color-primary: #18184c;
+  --color-accent: #2563eb;
+  --color-accent-soft: #e7eeff;
+
+  // Statuses
+  --color-error: #ea3a3a;
+  --color-error-soft: #fff2f2;
+  --color-success: #22b14c;
+  --color-success-soft: #e0f8e6;
+  --color-warning: #e98d20;
+  --color-warning-soft: #fff0e0;
+
+  // Tags
+  --color-tag-purple: #814ee0;
+  --color-tag-purple-soft: #eee4ff;
+  --color-tag-blue: #2563eb;
+  --color-tag-blue-soft: #e7eeff;
+  --color-tag-red: #ea3a3a;
+  --color-tag-red-soft: #ffe7e7;
+
+  // Typography
+  --font-family:
+    'Inter Variable', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --fs-xs: #{rem(12)};
+  --fs-sm: #{rem(13)};
+  --fs-md: #{rem(14)};
+  --fs-lg: #{rem(15)};
+  --fs-xl: #{rem(22)};
+  --fs-2xl: #{rem(26)};
+  --fs-3xl: #{rem(32)};
+  --fs-display: #{rem(36)};
+  --lh-base: 1.2;
+
+  // Radii
+  --radius-sm: 8px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+  --radius-xl: 20px;
+  --radius-2xl: 24px;
+
+  // Shadows
+  --shadow-card: 0 2px 12px rgb(0 0 0 / 4%);
+  --shadow-panel: 0 8px 32px rgb(24 24 76 / 6%);
+  --shadow-button: 0 4px 12px rgb(24 24 76 / 20%);
+
+  // Layout
+  --sidebar-width: #{rem(72)};
+  --sidebar-width-expanded: #{rem(240)};
+  --page-padding: #{rem(36)};
+
+  // Motion
+  --transition-fast: 150ms ease;
+  --transition-base: 250ms ease;
+}

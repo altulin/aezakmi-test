@@ -1,0 +1,22 @@
+// Mockup is desktop-only (1440), so styles are written desktop-first
+// and these mixins narrow them down.
+//   desktop: >= 1200px (default styles, no mixin needed)
+//   tablet:  768px – 1199px
+//   mobile:  < 768px
+
+$bp-tablet: 1200px;
+$bp-mobile: 768px;
+
+// Tablet and smaller
+@mixin tablet {
+  @media (max-width: ($bp-tablet - 0.02px)) {
+    @content;
+  }
+}
+
+// Mobile only
+@mixin mobile {
+  @media (max-width: ($bp-mobile - 0.02px)) {
+    @content;
+  }
+}

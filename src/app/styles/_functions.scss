@@ -1,0 +1,6 @@
+@use 'sass:math';
+
+// Converts a px value from the mockup to rem: rem(14) -> 0.875rem
+@function rem($px) {
+  @return math.div($px, 16) * 1rem;
+}
