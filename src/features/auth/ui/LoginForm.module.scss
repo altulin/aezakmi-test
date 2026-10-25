@@ -1,0 +1,32 @@
+@use '@/app/styles/functions' as *;
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: rem(24);
+}
+
+.fields {
+  display: flex;
+  flex-direction: column;
+  gap: rem(12);
+}
+
+.rootError {
+  margin: 0;
+  font-size: var(--fs-sm);
+  font-weight: 500;
+  color: var(--color-error);
+  text-align: center;
+}
+
+.submit {
+  width: 100%;
+}
+
+.hint {
+  margin: 0;
+  font-size: var(--fs-xs);
+  color: var(--color-text-muted);
+  text-align: center;
+}
