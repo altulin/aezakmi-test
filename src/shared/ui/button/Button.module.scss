@@ -1,0 +1,64 @@
+@use '@/app/styles/functions' as *;
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: rem(8);
+  height: rem(56);
+  padding: 0 rem(24);
+  border-radius: var(--radius-field);
+  font-size: rem(16);
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  transition:
+    opacity var(--transition-fast),
+    transform 0.1s ease;
+}
+
+.button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.button:not(:disabled):active {
+  transform: scale(0.98);
+}
+
+.primary {
+  background-color: var(--color-primary);
+  color: var(--color-text-inverse);
+  box-shadow: var(--shadow-button);
+}
+
+.secondary {
+  background-color: var(--color-surface);
+  color: var(--color-text-muted);
+  border: 1.5px solid var(--color-border);
+}
+
+.spinner {
+  width: rem(20);
+  height: rem(20);
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  border-top-color: currentColor;
+  animation: spin 0.8s linear infinite;
+}
+
+.secondary .spinner {
+  border-color: rgba(0, 0, 0, 0.1);
+  border-top-color: currentColor;
+}
+
+.content {
+  display: inline-flex;
+  align-items: center;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}

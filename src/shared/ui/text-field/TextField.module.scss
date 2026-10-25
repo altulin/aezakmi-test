@@ -1,0 +1,68 @@
+@use '@/app/styles/functions' as *;
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+.label {
+  margin-bottom: rem(8);
+  font-size: var(--fs-sm);
+  font-weight: 500;
+  color: var(--color-text);
+}
+
+.field {
+  display: flex;
+  align-items: center;
+  gap: rem(12);
+  height: rem(56);
+  padding: rem(16) rem(20);
+  border-radius: var(--radius-field);
+  background-color: var(--color-field-auth);
+  border: 1.5px solid transparent;
+  transition: border-color var(--transition-fast);
+}
+
+.field:focus-within {
+  border-color: var(--color-accent);
+}
+
+.fieldError {
+  background-color: var(--color-error-soft);
+  border-color: var(--color-error);
+}
+
+.fieldError:focus-within {
+  border-color: var(--color-error);
+}
+
+.icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-text-muted);
+  flex-shrink: 0;
+}
+
+.input {
+  flex: 1;
+  border: none;
+  background: transparent;
+  outline: none;
+  font-size: var(--fs-lg);
+  color: var(--color-text);
+  padding: 0;
+}
+
+.input::placeholder {
+  color: var(--color-text-muted);
+}
+
+.errorText {
+  margin-top: rem(6);
+  font-size: var(--fs-xs);
+  font-weight: 500;
+  color: var(--color-error);
+  padding-left: rem(4);
+}
