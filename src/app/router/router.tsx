@@ -1,5 +1,7 @@
 import { createBrowserRouter, Navigate } from 'react-router';
 
+import { AppLayout } from './AppLayout';
+import { GuestRoute } from './GuestRoute';
 import {
   CardFormPage,
   CardPreviewPage,
@@ -7,9 +9,8 @@ import {
   NotFoundPage,
   RatesPage,
 } from './pages';
-import { RootLayout } from './RootLayout';
 import { ProtectedRoute } from './ProtectedRoute';
-import { GuestRoute } from './GuestRoute';
+import { RootLayout } from './RootLayout';
 
 export const router = createBrowserRouter([
   {
@@ -19,17 +20,20 @@ export const router = createBrowserRouter([
         element: <GuestRoute />,
         children: [{ path: '/login', element: <LoginPage /> }],
       },
-
       {
         element: <ProtectedRoute />,
         children: [
-          { path: '/', element: <Navigate to="/rates" replace /> },
-          { path: '/rates', element: <RatesPage /> },
-          { path: '/cards/new', element: <CardFormPage /> },
-          { path: '/cards/preview', element: <CardPreviewPage /> },
+          {
+            element: <AppLayout />,
+            children: [
+              { path: '/', element: <Navigate to="/rates" replace /> },
+              { path: '/rates', element: <RatesPage /> },
+              { path: '/cards/new', element: <CardFormPage /> },
+              { path: '/cards/preview', element: <CardPreviewPage /> },
+            ],
+          },
         ],
       },
-
       { path: '*', element: <NotFoundPage /> },
     ],
   },
