@@ -1,6 +1,3 @@
-// Safe wrappers around localStorage: access can throw in private mode,
-// when storage is full or disabled, and stored JSON may be corrupted.
-
 export const loadFromStorage = <T>(key: string): T | null => {
   try {
     const raw = localStorage.getItem(key);
@@ -10,14 +7,15 @@ export const loadFromStorage = <T>(key: string): T | null => {
   }
 };
 
-export const saveToStorage = (key: string, value: unknown): void => {
+export const saveToStorage = (key: string, value: unknown): boolean => {
   try {
     if (value === null || value === undefined) {
       localStorage.removeItem(key);
     } else {
       localStorage.setItem(key, JSON.stringify(value));
     }
+    return true;
   } catch {
-    // Storage is unavailable — the app keeps working, the state just won't persist.
+    return false;
   }
 };

@@ -26,8 +26,6 @@ export const TagsInput = ({
   const inputRef = useRef<HTMLInputElement>(null);
   const isFull = value.length >= MAX_TAGS;
 
-  // Adds candidates with trimming, case-insensitive dedupe and the tag limit.
-  // Returns the resulting number of tags.
   const addTags = (candidates: string[]): number => {
     const next = [...value];
     const seen = new Set(next.map((tag) => tag.toLowerCase()));
@@ -52,8 +50,6 @@ export const TagsInput = ({
     setInputValue('');
   };
 
-  // Splitting in onChange covers typed commas, pasted lists ("a, b, c")
-  // and mobile keyboards that report e.key as "Unidentified"
   const handleChange = (raw: string) => {
     if (!raw.includes(',')) {
       setInputValue(raw.slice(0, MAX_TAG_LENGTH));
@@ -63,17 +59,14 @@ export const TagsInput = ({
     const parts = raw.split(',');
     const rest = parts.pop() ?? '';
     const count = addTags(parts);
-    // Once the list is full the field turns read-only, so don't leave text in it
     setInputValue(
       count >= MAX_TAGS ? '' : rest.trimStart().slice(0, MAX_TAG_LENGTH)
     );
   };
 
-  // A pasted list is complete, so every part becomes a tag, including the last one.
-  // (While typing, the text after the last comma stays in the field: see handleChange.)
   const handlePaste = (e: ClipboardEvent<HTMLInputElement>) => {
     const pasted = e.clipboardData.getData('text');
-    if (!pasted.includes(',')) return; // a single word: let the browser paste it
+    if (!pasted.includes(',')) return;
 
     e.preventDefault();
     const input = e.currentTarget;
@@ -92,7 +85,6 @@ export const TagsInput = ({
 
   const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
-      // Enter must not submit the whole form
       e.preventDefault();
       commitInput();
       return;
@@ -105,7 +97,6 @@ export const TagsInput = ({
   };
 
   const handleBlur = () => {
-    // Don't lose text the user typed but didn't confirm with Enter
     commitInput();
     onBlur?.();
   };
@@ -134,8 +125,6 @@ export const TagsInput = ({
             onKeyDown={handleKeyDown}
             onBlur={handleBlur}
             placeholder={placeholder}
-            // readOnly (not disabled): typing is blocked, but focus, Tab and
-            // Backspace-to-remove keep working
             readOnly={isFull}
             aria-invalid={fieldProps['aria-invalid']}
             aria-describedby={fieldProps['aria-describedby']}

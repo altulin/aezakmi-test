@@ -5,21 +5,13 @@ import {
   getSellRate,
   getBuyRate,
   getRateChange,
-  getChangeDirection,
   formatRate,
   formatChange,
-  type ChangeDirection,
   type CurrencyCode,
 } from '@/entities/currency';
 import { Button, Skeleton } from '@/shared/ui';
 import { formatTime } from '@/shared/lib/date';
 import styles from './RatesTable.module.scss';
-
-const changeClassMap: Record<ChangeDirection, string | undefined> = {
-  up: styles.changeUp,
-  down: styles.changeDown,
-  flat: styles.changeNeutral,
-};
 
 const SKELETON_ROWS = Array.from({ length: 7 });
 
@@ -116,17 +108,9 @@ export const RatesTable = ({ selected, onSelect }: RatesTableProps) => {
                   ? getRateChange(course, previous)
                   : undefined;
 
-              const changeClass =
-                change !== undefined
-                  ? changeClassMap[getChangeDirection(change)]
-                  : styles.changeNeutral;
-
               const isSelected = selected === code;
 
               return (
-                // The click is handled by the row, so the whole row works even
-                // when the first cell is sticky (mobile). The button is the
-                // keyboard target: Enter/Space fire a click that bubbles here.
                 <tr
                   key={code}
                   className={`${styles.row} ${isSelected ? styles.rowSelected : ''}`.trim()}
@@ -152,9 +136,7 @@ export const RatesTable = ({ selected, onSelect }: RatesTableProps) => {
                   </td>
                   <td className={styles.cellNumber}>{formatRate(course)}</td>
                   {!selected && (
-                    <td
-                      className={`${styles.cellNumber} ${changeClass ?? ''}`.trim()}
-                    >
+                    <td className={styles.cellNumber}>
                       {change !== undefined ? formatChange(change) : '—'}
                     </td>
                   )}

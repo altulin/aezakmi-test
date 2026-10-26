@@ -1,7 +1,5 @@
 import { NavLink, Link, useMatch } from 'react-router';
 import { useLogout } from '@/features/logout';
-// Emoji from the mockup, exported from Figma, so the menu looks the same
-// on every OS instead of using the system emoji font
 import cardsIcon from '../assets/cards.svg';
 import logoIcon from '../assets/logo.svg';
 import logoutIcon from '../assets/logout.svg';
@@ -10,8 +8,6 @@ import styles from './Sidebar.module.scss';
 
 export const Sidebar = () => {
   const logout = useLogout();
-  // The Cards item links to the form but stays active on the whole section,
-  // including /cards/preview
   const isCardsSection = useMatch('/cards/*') !== null;
 
   const getNavLinkClass = ({ isActive }: { isActive: boolean }) => {
@@ -35,8 +31,6 @@ export const Sidebar = () => {
           />
           <span className={styles.label}>Rates</span>
         </NavLink>
-        {/* Plain Link: NavLink would set aria-current only on an exact
-            /cards/new match, while the item is active on the whole section */}
         <Link
           to="/cards/new"
           className={getNavLinkClass({ isActive: isCardsSection })}

@@ -10,8 +10,6 @@ interface ImagesInputProps {
   onBlur?: () => void;
   label?: string;
   error?: string;
-  /** URLs that belong to the already saved card: removing them in the form
-   *  must not revoke them, the user may still press Cancel. */
   persistedUrls?: ReadonlySet<string>;
 }
 
@@ -70,11 +68,9 @@ export const ImagesInput = ({
 
   const handleFileSelect = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) addFiles(e.target.files);
-    // Reset so that picking the same file again still fires onChange
     e.target.value = '';
   };
 
-  // Without preventDefault in dragOver the browser ignores drop and opens the file
   const handleDragOver = (e: DragEvent<HTMLElement>) => {
     e.preventDefault();
     if (!isFull) setIsDragging(true);
@@ -89,8 +85,6 @@ export const ImagesInput = ({
   };
 
   const handleRemove = (image: CardImage) => {
-    // Every createObjectURL keeps the file in memory until it is revoked.
-    // Images of the saved card are released by the form on save instead.
     if (!persistedUrls?.has(image.url)) {
       URL.revokeObjectURL(image.url);
     }

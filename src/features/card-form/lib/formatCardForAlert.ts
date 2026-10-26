@@ -1,6 +1,5 @@
 import type { Card } from '@/entities/card';
 
-// blob: URLs are long and meaningless to a person, so images are shown by file name
 export const formatCardForAlert = (card: Card): string => {
   const output = {
     ...card,

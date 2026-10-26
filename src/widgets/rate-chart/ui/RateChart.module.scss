@@ -9,17 +9,13 @@
   box-shadow: var(--shadow-card);
   padding: rem(24);
 
-  // Sticks next to the table only when the whole panel fits in the window;
-  // in a short window it scrolls with the page, so its bottom stays reachable
   @media (min-height: 640px) {
     position: sticky;
     top: var(--page-padding-top);
     min-height: calc(100dvh - var(--page-padding-top) - var(--page-padding));
   }
 
-  // Under the table: full width, no stretching to the window height
   @include tablet {
-    // Space above the panel when the page scrolls to it
     scroll-margin-top: var(--page-padding-top);
     position: static;
     width: 100%;

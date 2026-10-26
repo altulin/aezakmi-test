@@ -59,7 +59,6 @@ table {
 #root {
   isolation: isolate;
   min-height: 100dvh;
-  // Contains children's margins so they don't collapse through #root
   display: flow-root;
 }
 

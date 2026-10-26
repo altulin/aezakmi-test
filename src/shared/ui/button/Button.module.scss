@@ -23,8 +23,6 @@
   transform: scale(0.98);
 }
 
-/* --- Sizes --- */
-
 .lg {
   height: rem(56);
   padding: 0 rem(24);
@@ -36,8 +34,6 @@
   padding: 0 rem(28);
   font-size: var(--fs-md);
 }
-
-/* --- Variants --- */
 
 .primary {
   background-color: var(--color-primary);

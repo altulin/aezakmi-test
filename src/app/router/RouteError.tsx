@@ -2,8 +2,6 @@ import { isRouteErrorResponse, Link, useRouteError } from 'react-router';
 import { Button } from '@/shared/ui';
 import styles from './RouteError.module.scss';
 
-// After a redeploy the old chunk names are gone, and a lazy page fails to load.
-// A full reload fetches the new index.html with the new chunk names.
 const isChunkLoadError = (error: unknown) =>
   error instanceof Error &&
   /dynamically imported module|Importing a module script failed|Loading chunk/i.test(

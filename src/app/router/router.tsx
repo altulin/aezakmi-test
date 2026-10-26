@@ -16,7 +16,6 @@ import { RouteError } from './RouteError';
 export const router = createBrowserRouter([
   {
     element: <RootLayout />,
-    // Fallback for pages outside the app layout: login, not-found
     errorElement: <RouteError />,
     children: [
       {
@@ -30,8 +29,6 @@ export const router = createBrowserRouter([
             element: <AppLayout />,
             children: [
               {
-                // Pathless route: its errorElement renders inside AppLayout's
-                // <Outlet />, so the sidebar stays on screen
                 errorElement: <RouteError />,
                 children: [
                   { path: '/', element: <Navigate to="/rates" replace /> },

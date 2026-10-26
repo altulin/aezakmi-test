@@ -12,8 +12,6 @@ export const CardFormPage = () => {
     navigate('/cards/preview');
   };
 
-  // Editing: Cancel returns to the untouched preview.
-  // Creating: no onCancel, the form just clears itself and the user stays here.
   const handleCancel = currentCard
     ? () => navigate('/cards/preview')
     : undefined;

@@ -25,8 +25,6 @@ export const RatesPage = () => {
   const rawPeriod = searchParams.get('period');
   const period = isPeriod(rawPeriod) ? rawPeriod : DEFAULT_PERIOD;
 
-  // A broken link (?currency=XXX or ?period=7d) is fixed in the address bar,
-  // so the URL matches what is on screen. replace: no extra history entry.
   useEffect(() => {
     const isBadCurrency = rawCurrency !== null && !selected;
     const isBadPeriod = rawPeriod !== null && !isPeriod(rawPeriod);
@@ -36,7 +34,6 @@ export const RatesPage = () => {
       (prev) => {
         const next = new URLSearchParams(prev);
         if (isBadCurrency) {
-          // Without a currency the period means nothing
           next.delete('currency');
           next.delete('period');
         } else {
@@ -49,11 +46,8 @@ export const RatesPage = () => {
   }, [rawCurrency, rawPeriod, selected, setSearchParams]);
 
   const chartRef = useRef<HTMLElement>(null);
-  // Set only by a click, so opening a link with ?currency= doesn't scroll
   const shouldScrollToChart = useRef(false);
 
-  // On tablet and mobile the chart opens under the table, often below the
-  // first screen: bring it into view so the user sees that it appeared
   useEffect(() => {
     if (!selected || !shouldScrollToChart.current) return;
     shouldScrollToChart.current = false;

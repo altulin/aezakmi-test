@@ -1,14 +1,12 @@
 @use '@/app/styles/functions' as *;
 @use '@/app/styles/field' as *;
 
-/* lg size (default) */
 .field {
   @include field(var(--radius-field), var(--color-field-auth));
   height: rem(56);
   padding: 0 rem(20);
 }
 
-/* md size */
 .md {
   height: rem(46);
   padding: 0 rem(16);

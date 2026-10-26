@@ -73,8 +73,6 @@ export const CardForm = ({
     defaultValues: initialValues ? toFormValues(initialValues) : EMPTY_VALUES,
   });
 
-  // Image URLs of the saved card. They stay alive until a save replaces them,
-  // so Cancel can bring the card back untouched.
   const persistedUrls = useMemo(
     () => new Set(initialValues?.images.map((image) => image.url)),
     [initialValues]
@@ -89,7 +87,6 @@ export const CardForm = ({
     const card = await mockSaveCard(values);
     alert(formatCardForAlert(card));
 
-    // The old card is replaced: release its images that the new one dropped
     revokeExcept(
       initialValues?.images ?? [],
       new Set(card.images.map((image) => image.url))
@@ -99,7 +96,6 @@ export const CardForm = ({
   };
 
   const handleCancel = () => {
-    // Release images added in this session, keep the saved card's ones
     revokeExcept(getValues('images'), persistedUrls);
     reset();
     onCancel?.();

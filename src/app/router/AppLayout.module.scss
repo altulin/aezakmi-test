@@ -8,7 +8,6 @@
 
 .content {
   flex: 1;
-  // Lets wide children (the table) shrink instead of widening the page
   min-width: 0;
   padding: var(--page-padding-top) var(--page-padding) var(--page-padding);
   display: flex;

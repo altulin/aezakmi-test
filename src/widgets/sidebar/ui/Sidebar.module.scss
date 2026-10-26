@@ -9,9 +9,9 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: rem(24) 0;
+  padding: rem(29) 0 rem(16);
   border-right: 1px solid var(--color-border);
-  flex-shrink: 0; /* Prevent sidebar from shrinking */
+  flex-shrink: 0;
 }
 
 .logo {
@@ -33,7 +33,7 @@
   align-items: center;
   justify-content: center;
   gap: rem(4);
-  padding: rem(12) rem(4);
+  padding: rem(10) rem(4);
   border-radius: var(--radius-md);
   color: var(--color-text-muted);
   text-decoration: none;
@@ -52,7 +52,6 @@
 }
 
 .icon {
-  // Block keeps the image off the text baseline, no extra gap below it
   display: block;
 }
 
@@ -62,7 +61,7 @@
 }
 
 .logout {
-  margin-top: auto; /* Push button to the bottom */
+  margin-top: auto;
   width: 100%;
   padding: 0 rem(8);
 }

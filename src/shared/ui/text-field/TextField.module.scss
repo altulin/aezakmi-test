@@ -6,7 +6,6 @@
   flex-direction: column;
 }
 
-/* lg size (default) */
 .field {
   @include field(var(--radius-field), var(--color-field-auth));
   gap: rem(12);
@@ -14,7 +13,6 @@
   padding: rem(16) rem(20);
 }
 
-/* md size */
 .md {
   height: rem(46);
   padding: 0 rem(16);

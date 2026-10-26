@@ -5,12 +5,10 @@
   background-color: var(--color-surface);
   border-radius: var(--radius-xl);
   box-shadow: var(--shadow-card);
-  // Clips the rounded corners; on phones also scrolls the table sideways
   overflow-x: auto;
   padding: 0 rem(16) rem(8);
 
   @include mobile {
-    // No left padding: the sticky first column sits right at the edge
     padding: 0 rem(8) rem(8) 0;
   }
 }
@@ -26,17 +24,13 @@
   }
 }
 
-.table thead th,
-.table tbody td {
-  padding: rem(16) rem(16) rem(16) 0;
-}
-
 .table th:first-child,
 .table td:first-child {
   padding-left: rem(16);
 }
 
 .table thead th {
+  padding: rem(16) rem(16) rem(11) 0;
   font-size: var(--fs-sm);
   font-weight: 500;
   color: var(--color-text-muted);
@@ -45,18 +39,17 @@
 }
 
 .table tbody td {
-  height: rem(48);
+  height: rem(49);
   font-size: var(--fs-md);
   border-bottom: 1px solid var(--color-divider);
   vertical-align: middle;
+  padding: 0 rem(16) 0 0;
   transition: background-color var(--transition-fast);
 }
 
 .table tbody tr:last-child td {
   border-bottom: none;
 }
-
-/* --- Интерактивность и ховер --- */
 
 .row {
   position: relative;
@@ -67,8 +60,6 @@
   background-color: var(--color-bg);
 }
 
-/* --- Выбранная строка --- */
-
 .rowSelected td {
   background-color: var(--color-accent-soft);
   font-weight: 600;
@@ -78,7 +69,6 @@
   background-color: var(--color-accent-soft);
 }
 
-/* Скругление крайних ячеек для фона */
 .row:hover td:first-child,
 .rowSelected td:first-child {
   border-top-left-radius: var(--radius-md);
@@ -91,19 +81,14 @@
   border-bottom-right-radius: var(--radius-md);
 }
 
-/* --- Скрытие разделителей вокруг скруглённых плашек --- */
-
-/* Убираем нижний разделитель у самой выделенной строки */
 .rowSelected td {
   border-bottom-color: transparent;
 }
 
-/* Убираем разделитель у строки, которая находится прямо над выделенной */
 .table tbody tr:has(+ .rowSelected) td {
   border-bottom-color: transparent;
 }
 
-/* То же самое для состояния ховера (наведения) */
 .row:hover td {
   border-bottom-color: transparent;
 }
@@ -111,8 +96,6 @@
 .table tbody tr:has(+ .row:hover) td {
   border-bottom-color: transparent;
 }
-
-/* --- Кнопка / растянутая ссылка --- */
 
 .currencyBtn {
   display: block;
@@ -142,14 +125,11 @@
   outline-offset: -2px;
   border-radius: var(--radius-md);
 
-  // On phones the sticky first cell clips this ring to one cell,
-  // so the ring is drawn on the row cells instead (below)
   @include mobile {
     outline: none;
   }
 }
 
-/* Focus ring around the whole row on phones: inset shadows on every cell */
 .row:has(.currencyBtn:focus-visible) td {
   @include mobile {
     box-shadow:
@@ -185,18 +165,6 @@
 .colNumber,
 .cellNumber {
   font-variant-numeric: tabular-nums;
-}
-
-.changeUp {
-  color: var(--color-success);
-}
-
-.changeDown {
-  color: var(--color-error);
-}
-
-.changeNeutral {
-  color: var(--color-text);
 }
 
 .table .skeletonCurrency {
@@ -239,9 +207,6 @@
   margin-bottom: rem(16);
 }
 
-/* --- Sticky currency column on phones --- */
-
-/* The table scrolls sideways there, the currency stays in view */
 .table th:first-child,
 .table td:first-child {
   @include mobile {
@@ -251,8 +216,6 @@
   }
 }
 
-/* Opaque so scrolled cells don't show through. :where() keeps specificity
-   at zero, so the hover and selected backgrounds above still win. */
 :where(.table th:first-child, .table td:first-child) {
   @include mobile {
     background-color: var(--color-surface);

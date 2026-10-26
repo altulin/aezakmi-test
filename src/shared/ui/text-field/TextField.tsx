@@ -7,7 +7,6 @@ export interface TextFieldProps extends Omit<ComponentProps<'input'>, 'size'> {
   error?: string;
   label?: string;
   size?: 'md' | 'lg';
-  /** Dims the native date mask while no date is chosen (register() keeps the input uncontrolled). */
   isEmpty?: boolean;
 }
 
