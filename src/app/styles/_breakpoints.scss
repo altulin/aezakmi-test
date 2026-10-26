@@ -12,3 +12,9 @@ $bp-mobile: 768px;
     @content;
   }
 }
+
+@mixin above-mobile {
+  @media (min-width: $bp-mobile) {
+    @content;
+  }
+}

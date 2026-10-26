@@ -4,6 +4,7 @@
 .sidebar {
   position: sticky;
   top: 0;
+  z-index: 10;
   width: var(--sidebar-width);
   height: 100dvh;
   background-color: var(--color-surface);
@@ -13,6 +14,15 @@
   padding: rem(20) rem(10);
   border-right: 1px solid var(--color-border);
   flex-shrink: 0;
+  overflow: hidden;
+  white-space: nowrap;
+
+  @include above-mobile {
+    transition:
+      width var(--transition-base),
+      padding var(--transition-base),
+      box-shadow var(--transition-base);
+  }
 
   @include mobile {
     position: fixed;
@@ -20,7 +30,6 @@
     right: 0;
     bottom: 0;
     left: 0;
-    z-index: 10;
     flex-direction: row;
     align-items: stretch;
     gap: rem(8);
@@ -34,17 +43,72 @@
   }
 }
 
-.logo {
+.toggle {
   display: flex;
   align-items: center;
   justify-content: center;
+  gap: rem(10);
   width: 100%;
   height: rem(44);
   margin-bottom: rem(24);
+  padding: 0;
+  background: transparent;
+  border: none;
+  border-radius: var(--radius-lg);
+  font: inherit;
+  cursor: pointer;
+  transition: background-color var(--transition-fast);
+
+  &:hover {
+    background-color: var(--color-bg);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: -2px;
+  }
 
   @include mobile {
     display: none;
   }
+}
+
+.logo {
+  display: block;
+  flex-shrink: 0;
+  width: rem(24);
+  height: rem(24);
+}
+
+.brand,
+.divider,
+.menuTitle,
+.labelLong {
+  display: none;
+}
+
+.brand {
+  font-size: rem(20);
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--color-text);
+}
+
+.divider {
+  flex-shrink: 0;
+  width: 100%;
+  height: 1px;
+  background-color: var(--color-divider);
+}
+
+.menuTitle {
+  margin: rem(20) 0 rem(12);
+  font-size: rem(11);
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
 }
 
 .nav {
@@ -59,12 +123,14 @@
   }
 }
 
-.navLink {
+.navLink,
+.logoutBtn {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   gap: rem(4);
+  width: 100%;
   padding: rem(10) 0;
   border-radius: var(--radius-lg);
   color: var(--color-text-muted);
@@ -72,13 +138,16 @@
   transition:
     background-color var(--transition-fast),
     color var(--transition-fast);
+}
 
+.navLink {
   @include mobile {
     flex: 1;
   }
 }
 
-.navLink:hover {
+.navLink:hover,
+.logoutBtn:hover {
   background-color: var(--color-bg);
 }
 
@@ -86,17 +155,32 @@
   background-color: var(--color-accent-soft);
   color: var(--color-accent);
 
-  .label {
+  .label,
+  .labelLong {
     font-weight: 600;
   }
 }
 
 .icon {
   display: block;
+  flex-shrink: 0;
+  width: rem(22);
+  height: rem(22);
+}
+
+.logoutIcon {
+  width: rem(18);
+  height: rem(18);
 }
 
 .label {
   font-size: rem(10);
+  font-weight: 500;
+  line-height: 1.2;
+}
+
+.labelLong {
+  font-size: var(--fs-lg);
   font-weight: 500;
   line-height: 1.2;
 }
@@ -116,24 +200,116 @@
 }
 
 .logoutBtn {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: rem(4);
-  width: 100%;
-  padding: rem(10) 0;
   background: transparent;
   border: none;
-  border-radius: var(--radius-lg);
-  color: var(--color-text-muted);
+  font: inherit;
   cursor: pointer;
-  transition:
-    background-color var(--transition-fast),
-    color var(--transition-fast);
 }
 
 .logoutBtn:hover {
-  background-color: var(--color-bg);
   color: var(--color-error);
+}
+
+.expanded {
+  @include above-mobile {
+    width: var(--sidebar-width-expanded);
+    align-items: stretch;
+    padding: rem(24) rem(20);
+    box-shadow: 4px 0 20px rgb(0 0 0 / 8%);
+
+    @include tablet {
+      margin-right: calc(var(--sidebar-width) - var(--sidebar-width-expanded));
+    }
+
+    .toggle {
+      justify-content: flex-start;
+      width: calc(100% + #{rem(16)});
+      height: rem(44);
+      margin: rem(-8) rem(-8) rem(8);
+      padding: 0 rem(8);
+    }
+
+    .logo {
+      width: rem(28);
+      height: rem(28);
+    }
+
+    .brand,
+    .divider,
+    .menuTitle,
+    .labelLong {
+      display: block;
+    }
+
+    .label {
+      display: none;
+    }
+
+    .nav {
+      gap: rem(4);
+    }
+
+    .navLink,
+    .logoutBtn {
+      flex-direction: row;
+      justify-content: flex-start;
+      gap: rem(12);
+      padding: rem(12) rem(14);
+      color: var(--color-text);
+    }
+
+    .navLink.active {
+      color: var(--color-accent);
+    }
+
+    .icon,
+    .logoutIcon {
+      width: rem(20);
+      height: rem(20);
+    }
+
+    .toggle + .divider {
+      margin-top: rem(4);
+    }
+
+    .logout .divider {
+      margin-bottom: rem(16);
+    }
+
+    .logoutBtn {
+      color: var(--color-error);
+    }
+  }
+}
+
+.animated > * {
+  @include above-mobile {
+    animation: sidebar-fade-collapse var(--transition-base) both;
+  }
+}
+
+.animated.expanded > * {
+  @include above-mobile {
+    animation-name: sidebar-fade-expand;
+  }
+}
+
+@keyframes sidebar-fade-collapse {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes sidebar-fade-expand {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
 }
