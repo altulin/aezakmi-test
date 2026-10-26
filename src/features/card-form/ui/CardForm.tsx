@@ -8,6 +8,7 @@ import {
   type CardFormValues,
 } from '../model/cardSchema';
 import { TagsInput } from './TagsInput';
+import { ImagesInput } from './ImagesInput';
 import styles from './CardForm.module.scss';
 
 export const CardForm = () => {
@@ -103,6 +104,20 @@ export const CardForm = () => {
                   value={field.value}
                   onChange={field.onChange}
                   onBlur={field.onBlur}
+                  error={fieldState.error?.message}
+                />
+              )}
+            />
+
+            <Controller
+              name="images"
+              control={control}
+              render={({ field, fieldState }) => (
+                <ImagesInput
+                  value={field.value}
+                  onChange={field.onChange}
+                  onBlur={field.onBlur}
+                  label="Images"
                   error={fieldState.error?.message}
                 />
               )}

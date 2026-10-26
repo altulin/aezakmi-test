@@ -1,0 +1,151 @@
+@use '@/app/styles/functions' as *;
+
+.body {
+  display: flex;
+  flex-direction: column;
+  gap: rem(12);
+}
+
+.hiddenInput {
+  display: none;
+}
+
+/* --- Drop zone: full size when empty, compact "add more" strip otherwise --- */
+
+.dropzone,
+.addMore {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  border: 1.5px dashed var(--color-border);
+  background-color: transparent;
+  cursor: pointer;
+  transition:
+    border-color var(--transition-fast),
+    background-color var(--transition-fast);
+
+  /* Children ignore the pointer, so dragleave doesn't fire when the cursor
+     moves over the icon or the text and the highlight doesn't flicker */
+  > * {
+    pointer-events: none;
+  }
+
+  &:hover {
+    border-color: var(--color-accent);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 2px;
+  }
+}
+
+.dropzone {
+  flex-direction: column;
+  gap: rem(4);
+  height: rem(120);
+  border-radius: var(--radius-lg);
+}
+
+.addMore {
+  gap: rem(8);
+  height: rem(56);
+  border-radius: var(--radius-md);
+}
+
+.dragging {
+  border-color: var(--color-accent);
+  background-color: var(--color-accent-soft);
+}
+
+.fieldError {
+  border-color: var(--color-error);
+  background-color: var(--color-error-soft);
+}
+
+.icon {
+  font-size: rem(28);
+  line-height: 1;
+  margin-bottom: rem(4);
+
+  .addMore & {
+    font-size: rem(16);
+    margin-bottom: 0;
+  }
+}
+
+.text {
+  font-size: var(--fs-sm);
+  color: var(--color-text-muted);
+}
+
+.browse {
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  color: var(--color-accent);
+}
+
+/* --- Thumbnails --- */
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: rem(12);
+}
+
+.tile {
+  display: flex;
+  flex-direction: column;
+  gap: rem(4);
+  min-width: 0; /* lets long file names shrink with ellipsis inside the grid cell */
+}
+
+.preview {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  background-color: var(--color-field);
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
+
+.removeBtn {
+  position: absolute;
+  top: rem(4);
+  right: rem(4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: rem(24);
+  height: rem(24);
+  border-radius: 50%;
+  background-color: var(--color-surface);
+  box-shadow: var(--shadow-card);
+  color: var(--color-error);
+  font-size: var(--fs-xs);
+  transition: background-color var(--transition-fast);
+
+  &:hover {
+    background-color: var(--color-error-soft);
+  }
+}
+
+.name {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  font-size: var(--fs-xs);
+  color: var(--color-text-muted);
+}
+
+.notice {
+  font-size: var(--fs-xs);
+  font-weight: 500;
+  color: var(--color-error);
+}
