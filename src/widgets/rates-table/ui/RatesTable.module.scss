@@ -1,0 +1,50 @@
+@use '@/app/styles/functions' as *;
+
+.card {
+  background-color: var(--color-surface);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-card);
+  overflow: hidden;
+  padding: 0 rem(16);
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+  text-align: left;
+}
+
+.table thead th {
+  padding: rem(16) 0;
+  font-size: rem(13);
+  font-weight: 500;
+  color: var(--color-text-muted);
+  border-bottom: 1px solid var(--color-divider);
+  white-space: nowrap;
+}
+
+.table tbody td {
+  padding: rem(16) 0;
+  height: rem(48);
+  font-size: rem(14);
+  color: var(--color-text);
+  border-bottom: 1px solid var(--color-divider);
+  vertical-align: middle;
+}
+
+.table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.currency {
+  display: inline-flex;
+  align-items: center;
+  gap: rem(8);
+  font-weight: 500;
+}
+
+.colNumber,
+.cellNumber {
+  font-variant-numeric: tabular-nums;
+}
