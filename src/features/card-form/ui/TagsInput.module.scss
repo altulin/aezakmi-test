@@ -1,0 +1,27 @@
+@use '@/app/styles/functions' as *;
+@use '@/app/styles/field' as *;
+
+.field {
+  @include field(var(--radius-lg), var(--color-field));
+  flex-wrap: wrap;
+  gap: rem(8);
+  min-height: rem(46);
+  padding: rem(8) rem(16);
+  cursor: text;
+}
+
+.input {
+  flex: 1;
+  min-width: rem(80);
+  height: rem(28);
+  padding: 0;
+  border: none;
+  background: transparent;
+  outline: none;
+  font-size: var(--fs-md);
+  color: var(--color-text);
+}
+
+.input::placeholder {
+  color: var(--color-text-muted);
+}

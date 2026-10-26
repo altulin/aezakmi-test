@@ -1,4 +1,4 @@
-import { useForm, useWatch } from 'react-hook-form';
+import { useForm, useWatch, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { PRIORITIES, STATUSES, ASSIGNEES } from '@/entities/card';
 import { Button, TextField, TextArea, Select } from '@/shared/ui';
@@ -7,6 +7,7 @@ import {
   type CardFormInput,
   type CardFormValues,
 } from '../model/cardSchema';
+import { TagsInput } from './TagsInput';
 import styles from './CardForm.module.scss';
 
 export const CardForm = () => {
@@ -83,6 +84,7 @@ export const CardForm = () => {
               error={errors.assignee?.message}
               {...register('assignee')}
             />
+
             <TextField
               label="Deadline"
               type="date"
@@ -90,6 +92,20 @@ export const CardForm = () => {
               isEmpty={!deadlineValue}
               error={errors.deadline?.message}
               {...register('deadline')}
+            />
+
+            <Controller
+              name="tags"
+              control={control}
+              render={({ field, fieldState }) => (
+                <TagsInput
+                  label="Tags"
+                  value={field.value}
+                  onChange={field.onChange}
+                  onBlur={field.onBlur}
+                  error={fieldState.error?.message}
+                />
+              )}
             />
           </div>
         </div>
