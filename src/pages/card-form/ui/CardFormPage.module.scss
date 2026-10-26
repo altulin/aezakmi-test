@@ -1,0 +1,16 @@
+@use '@/app/styles/functions' as *;
+
+.page {
+  display: flex;
+  flex-direction: column;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.title {
+  font-size: var(--fs-2xl);
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--color-text);
+  margin-bottom: rem(20);
+}

@@ -1,0 +1,25 @@
+@use '@/app/styles/functions' as *;
+@use '@/app/styles/field' as *;
+
+.field {
+  @include field(var(--radius-lg), var(--color-field));
+  padding: rem(12) rem(16);
+}
+
+.input {
+  display: block;
+  width: 100%;
+  height: rem(110);
+  resize: vertical;
+  border: none;
+  background: transparent;
+  outline: none;
+  color: var(--color-text);
+  font-family: inherit;
+  font-size: var(--fs-md);
+  padding: 0;
+}
+
+.input::placeholder {
+  color: var(--color-text-muted);
+}

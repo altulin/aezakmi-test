@@ -5,10 +5,7 @@
   align-items: center;
   justify-content: center;
   gap: rem(8);
-  height: rem(56);
-  padding: 0 rem(24);
   border-radius: var(--radius-field);
-  font-size: rem(16);
   font-weight: 600;
   cursor: pointer;
   border: none;
@@ -25,6 +22,22 @@
 .button:not(:disabled):active {
   transform: scale(0.98);
 }
+
+/* --- Sizes --- */
+
+.lg {
+  height: rem(56);
+  padding: 0 rem(24);
+  font-size: rem(16);
+}
+
+.md {
+  height: rem(43);
+  padding: 0 rem(28);
+  font-size: var(--fs-md);
+}
+
+/* --- Variants --- */
 
 .primary {
   background-color: var(--color-primary);

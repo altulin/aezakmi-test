@@ -1,0 +1,26 @@
+@use 'functions' as *;
+
+@mixin field($radius, $bg) {
+  position: relative;
+  display: flex;
+  align-items: center;
+  border-radius: $radius;
+  background-color: $bg;
+  border: 1.5px solid transparent;
+  transition:
+    border-color var(--transition-fast),
+    background-color var(--transition-fast);
+
+  &:focus-within {
+    border-color: var(--color-accent);
+  }
+
+  &.fieldError {
+    background-color: var(--color-error-soft);
+    border-color: var(--color-error);
+
+    &:focus-within {
+      border-color: var(--color-error);
+    }
+  }
+}

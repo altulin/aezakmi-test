@@ -1,13 +1,15 @@
-import { type ComponentProps } from 'react';
+import type { ComponentProps } from 'react';
 import styles from './Button.module.scss';
 
 export interface ButtonProps extends ComponentProps<'button'> {
   variant?: 'primary' | 'secondary';
+  size?: 'md' | 'lg';
   isLoading?: boolean;
 }
 
 export const Button = ({
   variant = 'primary',
+  size = 'lg',
   isLoading = false,
   disabled,
   className = '',
@@ -20,7 +22,7 @@ export const Button = ({
     <button
       type="button"
       disabled={isDisabled}
-      className={`${styles.button} ${styles[variant]} ${className}`}
+      className={`${styles.button} ${styles[variant]} ${styles[size]} ${className}`.trim()}
       aria-busy={isLoading || undefined}
       {...props}
     >

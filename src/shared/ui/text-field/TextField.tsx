@@ -1,50 +1,41 @@
-import { type ComponentProps, type ReactNode, useId } from 'react';
+import type { ComponentProps, ReactNode } from 'react';
+import { FormField } from '../form-field/FormField';
 import styles from './TextField.module.scss';
 
-export interface TextFieldProps extends ComponentProps<'input'> {
+export interface TextFieldProps extends Omit<ComponentProps<'input'>, 'size'> {
   icon?: ReactNode;
   error?: string;
   label?: string;
+  size?: 'md' | 'lg';
+  /** Dims the native date mask while no date is chosen (register() keeps the input uncontrolled). */
+  isEmpty?: boolean;
 }
 
 export const TextField = ({
   icon,
   error,
   label,
-  id,
-  className = '',
+  size = 'lg',
+  isEmpty = false,
+  className,
   ...props
 }: TextFieldProps) => {
-  const generatedId = useId();
-  const inputId = id ?? generatedId;
-  const errorId = `${inputId}-error`;
-
-  const hasError = Boolean(error);
-
   return (
-    <div className={`${styles.wrapper} ${className}`.trim()}>
-      {label && (
-        <label htmlFor={inputId} className={styles.label}>
-          {label}
-        </label>
+    <FormField label={label} error={error} className={className}>
+      {(fieldProps) => (
+        <div
+          className={`${styles.field} ${styles[size]} ${fieldProps.hasError ? styles.fieldError : ''}`.trim()}
+        >
+          {icon && <span className={styles.icon}>{icon}</span>}
+          <input
+            {...props}
+            id={fieldProps.id}
+            className={`${styles.input} ${isEmpty ? styles.empty : ''}`.trim()}
+            aria-invalid={fieldProps['aria-invalid']}
+            aria-describedby={fieldProps['aria-describedby']}
+          />
+        </div>
       )}
-      <div
-        className={`${styles.field} ${hasError ? styles.fieldError : ''}`.trim()}
-      >
-        {icon && <span className={styles.icon}>{icon}</span>}
-        <input
-          {...props}
-          id={inputId}
-          className={styles.input}
-          aria-invalid={hasError || undefined}
-          aria-describedby={hasError ? errorId : undefined}
-        />
-      </div>
-      {hasError && (
-        <span id={errorId} className={styles.errorText} role="alert">
-          {error}
-        </span>
-      )}
-    </div>
+    </FormField>
   );
 };

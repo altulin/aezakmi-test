@@ -8,12 +8,25 @@ const optionalEnum = <T extends readonly [string, ...string[]]>(values: T) =>
     .optional()
     .transform((v) => v || undefined);
 
+const requiredEnum = <T extends readonly [string, ...string[]]>(
+  values: T,
+  error: string
+) =>
+  z
+    .enum(values, { error })
+    .or(z.literal(''))
+    .transform((v, ctx) => {
+      if (v === '') {
+        ctx.addIssue({ code: 'custom', message: error });
+        return z.NEVER;
+      }
+      return v;
+    });
+
 export const cardSchema = z.object({
   title: z.string().trim().min(1, 'Title is required'),
   description: z.string().trim().min(1, 'Description is required'),
-  priority: z.enum(PRIORITIES, {
-    error: 'Please select a priority',
-  }),
+  priority: requiredEnum(PRIORITIES, 'Please select a priority'),
   status: optionalEnum(STATUSES),
   assignee: optionalEnum(ASSIGNEES),
   deadline: z

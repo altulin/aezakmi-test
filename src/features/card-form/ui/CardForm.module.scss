@@ -1,0 +1,33 @@
+@use '@/app/styles/functions' as *;
+
+.form {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.card {
+  background-color: var(--color-surface);
+  border-radius: var(--radius-xl);
+  padding: rem(28);
+  box-shadow: var(--shadow-panel);
+}
+
+.columns {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: rem(28);
+}
+
+.column {
+  display: flex;
+  flex-direction: column;
+  gap: rem(18);
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: rem(12);
+  margin-top: rem(24);
+}
