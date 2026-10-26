@@ -2,12 +2,14 @@ import { configureStore } from '@reduxjs/toolkit';
 import { setupListeners } from '@reduxjs/toolkit/query';
 
 import { SESSION_STORAGE_KEY, sessionReducer } from '@/entities/session';
+import { cardReducer } from '@/entities/card';
 import { saveToStorage } from '@/shared/lib/storage';
 import { baseApi } from '@/shared/api/baseApi';
 
 export const store = configureStore({
   reducer: {
     session: sessionReducer,
+    card: cardReducer,
     [baseApi.reducerPath]: baseApi.reducer,
   },
   middleware: (getDefaultMiddleware) =>

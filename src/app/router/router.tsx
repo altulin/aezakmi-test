@@ -11,10 +11,13 @@ import {
 } from './pages';
 import { ProtectedRoute } from './ProtectedRoute';
 import { RootLayout } from './RootLayout';
+import { RouteError } from './RouteError';
 
 export const router = createBrowserRouter([
   {
     element: <RootLayout />,
+    // Fallback for pages outside the app layout: login, not-found
+    errorElement: <RouteError />,
     children: [
       {
         element: <GuestRoute />,
@@ -26,10 +29,17 @@ export const router = createBrowserRouter([
           {
             element: <AppLayout />,
             children: [
-              { path: '/', element: <Navigate to="/rates" replace /> },
-              { path: '/rates', element: <RatesPage /> },
-              { path: '/cards/new', element: <CardFormPage /> },
-              { path: '/cards/preview', element: <CardPreviewPage /> },
+              {
+                // Pathless route: its errorElement renders inside AppLayout's
+                // <Outlet />, so the sidebar stays on screen
+                errorElement: <RouteError />,
+                children: [
+                  { path: '/', element: <Navigate to="/rates" replace /> },
+                  { path: '/rates', element: <RatesPage /> },
+                  { path: '/cards/new', element: <CardFormPage /> },
+                  { path: '/cards/preview', element: <CardPreviewPage /> },
+                ],
+              },
             ],
           },
         ],

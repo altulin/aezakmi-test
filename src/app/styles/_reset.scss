@@ -1,3 +1,9 @@
+#root {
+  isolation: isolate;
+  min-height: 100dvh;
+  display: flow-root;
+}
+
 *,
 *::before,
 *::after {

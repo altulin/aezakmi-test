@@ -1,6 +1,14 @@
+import { useMemo } from 'react';
 import { useForm, useWatch, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { PRIORITIES, STATUSES, ASSIGNEES } from '@/entities/card';
+import {
+  PRIORITIES,
+  STATUSES,
+  ASSIGNEES,
+  setCard,
+  type Card,
+  type CardImage,
+} from '@/entities/card';
 import { Button, TextField, TextArea, Select } from '@/shared/ui';
 import {
   cardSchema,
@@ -9,35 +17,92 @@ import {
 } from '../model/cardSchema';
 import { TagsInput } from './TagsInput';
 import { ImagesInput } from './ImagesInput';
+import { mockSaveCard } from '../api/mockSaveCard';
+import { formatCardForAlert } from '../lib/formatCardForAlert';
+import { useAppDispatch } from '@/app/store/hooks';
 import styles from './CardForm.module.scss';
 
-export const CardForm = () => {
+const EMPTY_VALUES: CardFormInput = {
+  title: '',
+  description: '',
+  priority: '',
+  status: '',
+  assignee: '',
+  deadline: '',
+  tags: [],
+  images: [],
+};
+
+const toFormValues = (card: Card): CardFormInput => ({
+  ...card,
+  status: card.status ?? '',
+  assignee: card.assignee ?? '',
+  deadline: card.deadline ?? '',
+});
+
+const revokeExcept = (images: CardImage[], keep: ReadonlySet<string>) => {
+  for (const { url } of images) {
+    if (!keep.has(url)) URL.revokeObjectURL(url);
+  }
+};
+
+interface CardFormProps {
+  initialValues?: Card;
+  submitLabel?: string;
+  onSuccess?: () => void;
+  onCancel?: () => void;
+}
+
+export const CardForm = ({
+  initialValues,
+  submitLabel = 'Create Card',
+  onSuccess,
+  onCancel,
+}: CardFormProps) => {
+  const dispatch = useAppDispatch();
+
   const {
     register,
     handleSubmit,
     control,
-    formState: { errors },
+    reset,
+    getValues,
+    formState: { errors, isSubmitting },
   } = useForm<CardFormInput, unknown, CardFormValues>({
     resolver: zodResolver(cardSchema),
-    defaultValues: {
-      title: '',
-      description: '',
-      priority: '',
-      status: '',
-      assignee: '',
-      deadline: '',
-      tags: [],
-      images: [],
-    },
+    defaultValues: initialValues ? toFormValues(initialValues) : EMPTY_VALUES,
   });
+
+  // Image URLs of the saved card. They stay alive until a save replaces them,
+  // so Cancel can bring the card back untouched.
+  const persistedUrls = useMemo(
+    () => new Set(initialValues?.images.map((image) => image.url)),
+    [initialValues]
+  );
 
   const deadlineValue = useWatch({
     control,
     name: 'deadline',
   });
 
-  const onSubmit = (data: CardFormValues) => {
-    console.log(data);
+  const onSubmit = async (values: CardFormValues) => {
+    const card = await mockSaveCard(values);
+    alert(formatCardForAlert(card));
+
+    // The old card is replaced: release its images that the new one dropped
+    revokeExcept(
+      initialValues?.images ?? [],
+      new Set(card.images.map((image) => image.url))
+    );
+    dispatch(setCard(card));
+    onSuccess?.();
+  };
+
+  const handleCancel = () => {
+    // Release images added in this session, keep the saved card's ones
+    revokeExcept(getValues('images'), persistedUrls);
+    reset();
+    onCancel?.();
   };
 
   return (
@@ -117,6 +182,7 @@ export const CardForm = () => {
                   value={field.value}
                   onChange={field.onChange}
                   onBlur={field.onBlur}
+                  persistedUrls={persistedUrls}
                   label="Images"
                   error={fieldState.error?.message}
                 />
@@ -127,11 +193,21 @@ export const CardForm = () => {
       </div>
 
       <div className={styles.actions}>
-        <Button variant="secondary" size="md" type="button">
+        <Button
+          variant="secondary"
+          size="md"
+          type="button"
+          onClick={handleCancel}
+        >
           Cancel
         </Button>
-        <Button variant="primary" size="md" type="submit">
-          Create Card
+        <Button
+          variant="primary"
+          size="md"
+          type="submit"
+          isLoading={isSubmitting}
+        >
+          {submitLabel}
         </Button>
       </div>
     </form>

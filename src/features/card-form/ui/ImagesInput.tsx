@@ -10,6 +10,9 @@ interface ImagesInputProps {
   onBlur?: () => void;
   label?: string;
   error?: string;
+  /** URLs that belong to the already saved card: removing them in the form
+   *  must not revoke them, the user may still press Cancel. */
+  persistedUrls?: ReadonlySet<string>;
 }
 
 const MAX_IMAGES = 6;
@@ -25,6 +28,7 @@ export const ImagesInput = ({
   onBlur,
   label,
   error,
+  persistedUrls,
 }: ImagesInputProps) => {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [isDragging, setIsDragging] = useState(false);
@@ -85,8 +89,11 @@ export const ImagesInput = ({
   };
 
   const handleRemove = (image: CardImage) => {
-    // Every createObjectURL keeps the file in memory until it is revoked
-    URL.revokeObjectURL(image.url);
+    // Every createObjectURL keeps the file in memory until it is revoked.
+    // Images of the saved card are released by the form on save instead.
+    if (!persistedUrls?.has(image.url)) {
+      URL.revokeObjectURL(image.url);
+    }
     onChange(value.filter((item) => item.id !== image.id));
     setNotice('');
   };

@@ -1,9 +1,12 @@
-import { NavLink, Link } from 'react-router';
+import { NavLink, Link, useMatch } from 'react-router';
 import { useLogout } from '@/features/logout';
 import styles from './Sidebar.module.scss';
 
 export const Sidebar = () => {
   const logout = useLogout();
+  // The Cards item links to the form but stays active on the whole section,
+  // including /cards/preview
+  const isCardsSection = useMatch('/cards/*') !== null;
 
   const getNavLinkClass = ({ isActive }: { isActive: boolean }) => {
     return `${styles.navLink} ${isActive ? styles.active : ''}`;
@@ -22,12 +25,18 @@ export const Sidebar = () => {
           </span>
           <span className={styles.label}>Rates</span>
         </NavLink>
-        <NavLink to="/cards/new" className={getNavLinkClass}>
+        {/* Plain Link: NavLink would set aria-current only on an exact
+            /cards/new match, while the item is active on the whole section */}
+        <Link
+          to="/cards/new"
+          className={getNavLinkClass({ isActive: isCardsSection })}
+          aria-current={isCardsSection ? 'page' : undefined}
+        >
           <span className={styles.icon} aria-hidden="true">
             📋
           </span>
           <span className={styles.label}>Cards</span>
-        </NavLink>
+        </Link>
       </nav>
 
       <div className={styles.logout}>
