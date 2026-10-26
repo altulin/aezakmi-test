@@ -9,8 +9,8 @@
   padding: rem(24);
 
   position: sticky;
-  top: var(--page-padding);
-  min-height: calc(100dvh - 2 * var(--page-padding));
+  top: var(--page-padding-top);
+  min-height: calc(100dvh - var(--page-padding-top) - var(--page-padding));
 }
 
 .header {

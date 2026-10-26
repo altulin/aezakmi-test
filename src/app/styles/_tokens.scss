@@ -1,4 +1,5 @@
 @use 'functions' as *;
+@use 'breakpoints' as *;
 
 // Design tokens from the Figma mockup (Test Task, desktop 1440).
 // Sizes that should scale with the user's font setting are in rem;
@@ -71,9 +72,19 @@
   // Layout
   --sidebar-width: #{rem(72)};
   --sidebar-width-expanded: #{rem(240)};
+  // Mockup: 28px above the page title, 36px on the sides and bottom
   --page-padding: #{rem(36)};
+  --page-padding-top: #{rem(28)};
 
   // Motion
   --transition-fast: 150ms ease;
   --transition-base: 250ms ease;
+}
+
+// Narrow screens: every pixel goes to the content
+@include mobile {
+  :root {
+    --page-padding: #{rem(16)};
+    --page-padding-top: #{rem(16)};
+  }
 }

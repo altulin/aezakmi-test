@@ -8,9 +8,8 @@
 
 .content {
   flex: 1;
-  padding: var(--page-padding);
+  padding: var(--page-padding-top) var(--page-padding) var(--page-padding);
   overflow-y: auto;
-  /* Убедимся, что контент не прилипает к сайдбару, если page-padding мал */
   display: flex;
   flex-direction: column;
 }

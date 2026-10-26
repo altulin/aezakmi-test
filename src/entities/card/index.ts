@@ -16,3 +16,4 @@ export {
   selectCurrentCard,
   cardReducer,
 } from './model/cardSlice';
+export { CardView } from './ui/CardView';
