@@ -1,7 +1,33 @@
 @use '@/app/styles/functions' as *;
 
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: rem(24);
+}
+
 .title {
+  margin: 0;
   font-size: var(--fs-2xl);
   font-weight: 700;
-  margin-bottom: rem(24);
+  line-height: 1.2;
+  color: var(--color-text);
+}
+
+.dateBadge {
+  padding: rem(6) rem(12);
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  color: var(--color-accent);
+  background-color: var(--color-accent-soft);
+  border-radius: var(--radius-md);
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.skeletonDate {
+  width: rem(140);
+  height: rem(32);
+  border-radius: var(--radius-md);
 }
