@@ -2,7 +2,10 @@ import { useSearchParams } from 'react-router';
 import {
   useGetLatestRatesQuery,
   isCurrencyCode,
+  isPeriod,
+  DEFAULT_PERIOD,
   type CurrencyCode,
+  type Period,
 } from '@/entities/currency';
 import { RatesTable } from '@/widgets/rates-table';
 import { RateChart } from '@/widgets/rate-chart';
@@ -17,16 +20,40 @@ export const RatesPage = () => {
   const rawCurrency = searchParams.get('currency');
   const selected = isCurrencyCode(rawCurrency) ? rawCurrency : undefined;
 
+  const rawPeriod = searchParams.get('period');
+  const period = isPeriod(rawPeriod) ? rawPeriod : DEFAULT_PERIOD;
+
   const handleSelect = (code: CurrencyCode) => {
     if (selected === code) {
-      setSearchParams({});
+      setSearchParams((prev) => {
+        const next = new URLSearchParams(prev);
+        next.delete('currency');
+        return next;
+      });
     } else {
-      setSearchParams({ currency: code });
+      setSearchParams((prev) => {
+        const next = new URLSearchParams(prev);
+        next.set('currency', code);
+        if (!next.has('period')) next.set('period', DEFAULT_PERIOD);
+        return next;
+      });
     }
   };
 
+  const handlePeriodChange = (newPeriod: Period) => {
+    setSearchParams((prev) => {
+      const next = new URLSearchParams(prev);
+      next.set('period', newPeriod);
+      return next;
+    });
+  };
+
   const handleClose = () => {
-    setSearchParams({});
+    setSearchParams((prev) => {
+      const next = new URLSearchParams(prev);
+      next.delete('currency');
+      return next;
+    });
   };
 
   return (
@@ -42,7 +69,14 @@ export const RatesPage = () => {
         </header>
         <RatesTable selected={selected} onSelect={handleSelect} />
       </div>
-      {selected && <RateChart currency={selected} onClose={handleClose} />}
+      {selected && (
+        <RateChart
+          currency={selected}
+          period={period}
+          onPeriodChange={handlePeriodChange}
+          onClose={handleClose}
+        />
+      )}
     </section>
   );
 };

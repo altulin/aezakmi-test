@@ -1,4 +1,5 @@
 import { CURRENCY_FLAGS, type CurrencyCode } from '../config/currencies';
+import styles from './CurrencyFlag.module.scss';
 
 interface CurrencyFlagProps {
   currency: CurrencyCode;
@@ -14,6 +15,7 @@ export const CurrencyFlag = ({ currency }: CurrencyFlagProps) => {
       width={20}
       height={15}
       loading="lazy"
+      className={styles.flag}
     />
   );
 };

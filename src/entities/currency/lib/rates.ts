@@ -18,6 +18,13 @@ const changeFormatter = new Intl.NumberFormat('en-US', {
   signDisplay: 'exceptZero',
 });
 
+const percentFormatter = new Intl.NumberFormat('en-US', {
+  style: 'percent',
+  minimumFractionDigits: 2,
+  maximumFractionDigits: 2,
+  signDisplay: 'exceptZero',
+});
+
 export const getSellRate = (rate: number): number => rate * (1 + SELL_MARKUP);
 export const getBuyRate = (rate: number): number => rate * (1 - BUY_DISCOUNT);
 export const formatRate = (rate: number): string => rateFormatter.format(rate);
@@ -25,6 +32,14 @@ export const getRateChange = (current: number, previous: number): number =>
   current - previous;
 export const formatChange = (change: number): string =>
   changeFormatter.format(change);
+
+export const getPercentChange = (first: number, last: number): number => {
+  return (last - first) / first;
+};
+
+export const formatPercentChange = (change: number): string => {
+  return percentFormatter.format(change);
+};
 
 export const getChangeDirection = (change: number): ChangeDirection => {
   const rounded = Number(change.toFixed(RATE_PRECISION));

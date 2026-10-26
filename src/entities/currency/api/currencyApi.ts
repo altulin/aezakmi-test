@@ -1,7 +1,16 @@
 import { baseApi } from '@/shared/api/baseApi';
 import { getDateDaysAgo } from '@/shared/lib/date';
-import type { LatestRates, TimeseriesResponse } from '../model/types';
-import { BASE_CURRENCY, CURRENCIES } from '../config/currencies';
+import type {
+  LatestRates,
+  TimeseriesResponse,
+  RateHistoryPoint,
+} from '../model/types';
+import {
+  BASE_CURRENCY,
+  CURRENCIES,
+  type CurrencyCode,
+} from '../config/currencies';
+import { PERIODS, type Period } from '../config/periods';
 
 export const currencyApi = baseApi.injectEndpoints({
   endpoints: (build) => ({
@@ -36,7 +45,38 @@ export const currencyApi = baseApi.injectEndpoints({
         };
       },
     }),
+
+    getRateHistory: build.query<
+      RateHistoryPoint[],
+      { currency: CurrencyCode; period: Period }
+    >({
+      query: ({ currency, period }) => {
+        const startDate = getDateDaysAgo(PERIODS[period]);
+        return {
+          url: `${startDate}..`,
+          params: {
+            base: BASE_CURRENCY,
+            symbols: currency,
+          },
+        };
+      },
+      transformResponse: (
+        response: TimeseriesResponse,
+        _meta,
+        { currency }
+      ): RateHistoryPoint[] => {
+        return Object.entries(response.rates)
+          .map(([date, rates]) => ({
+            date,
+            value: rates[currency],
+          }))
+          .filter(
+            (point): point is RateHistoryPoint => point.value !== undefined
+          )
+          .sort((a, b) => a.date.localeCompare(b.date));
+      },
+    }),
   }),
 });
 
-export const { useGetLatestRatesQuery } = currencyApi;
+export const { useGetLatestRatesQuery, useGetRateHistoryQuery } = currencyApi;

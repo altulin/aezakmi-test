@@ -13,3 +13,8 @@ export interface LatestRates {
   rates: Partial<Record<CurrencyCode, number>>;
   previousRates: Partial<Record<CurrencyCode, number>>;
 }
+
+export interface RateHistoryPoint {
+  date: string;
+  value: number;
+}
