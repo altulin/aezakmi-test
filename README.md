@@ -3,6 +3,7 @@
 Тестовое задание Aezakmi Group (Frontend React + TS): SPA из трёх страниц по макету в Figma — вход, таблица курсов валют с графиком и форма создания карточки задачи.
 
 - **Демо:** https://aezakmi-test.vercel.app
+- **Storybook:** https://aezakmi-test-storybook.vercel.app
 - **Вход:** `demo@example.com` / `demo123`
 - **Макет:** [Figma](https://www.figma.com/design/p3bs7nOd0noohqkGTjOvTm/Test-Task?node-id=0-1&t=yC6nWIOopGpPEzFP-1)
 
@@ -164,6 +165,8 @@ npm test
 npm run storybook        # http://localhost:6006
 npm run build-storybook  # статическая сборка в storybook-static/
 ```
+
+Опубликованная версия: https://aezakmi-test-storybook.vercel.app
 
 Истории лежат рядом с компонентами (`*.stories.tsx`) и используют те же глобальные стили и токены, что и приложение:
 
