@@ -1,73 +1,161 @@
-# React + TypeScript + Vite
+# Rates & Cards
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Тестовое задание Aezakmi Group (Frontend React + TS): SPA из трёх страниц по макету в Figma — вход, таблица курсов валют с графиком и форма создания карточки задачи.
 
-Currently, two official plugins are available:
+- **Демо:** https://aezakmi-test.vercel.app
+- **Вход:** `demo@example.com` / `demo123`
+- **Макет:** [Figma](https://www.figma.com/design/p3bs7nOd0noohqkGTjOvTm/Test-Task?node-id=0-1&t=yC6nWIOopGpPEzFP-1)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Запуск
 
-## React Compiler
+Нужен Node.js 20.19+ или 22.12+ (требование Vite 8).
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-]);
+```bash
+npm install
+npm run dev        # http://127.0.0.1:3000
 ```
 
-You can also install [eslint-plugin-react-x](https://npmx.dev/package/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://npmx.dev/package/eslint-plugin-react-dom) for React-specific lint rules:
+| Команда             | Что делает                                   |
+| ------------------- | -------------------------------------------- |
+| `npm run dev`       | dev-сервер на порту 3000                     |
+| `npm run build`     | проверка типов и production-сборка в `dist/` |
+| `npm run preview`   | просмотр собранной версии                    |
+| `npm test`          | тесты Jest + React Testing Library           |
+| `npm run lint`      | ESLint                                       |
+| `npm run typecheck` | TypeScript без сборки                        |
+| `npm run format`    | Prettier                                     |
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x';
-import reactDom from 'eslint-plugin-react-dom';
+Переменные окружения не нужны: API открытый и без ключа.
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-]);
+## Что сделано по заданию
+
+### 1. Вход
+
+- Mock-авторизация без бэкенда: `mockLogin` с задержкой 800 мс проверяет демо-логин и пароль.
+- Валидация на React Hook Form + zod: поле с ошибкой подсвечивается, под ним текст ошибки, у поля `aria-invalid`. Неверный пароль показывает общую ошибку формы.
+- Сессия хранится в Redux (`sessionSlice`) и в `localStorage`, поэтому вход переживает перезагрузку.
+- Logout очищает сессию и ведёт на страницу входа.
+- Защищённые маршруты: без входа доступна только `/login`, остальные страницы уводят на неё. После входа пользователь возвращается на страницу, которую открывал. Вошедшего пользователя со страницы входа уводит на `/rates`.
+
+### 2. Таблица валют
+
+- Курсы USD к AUD, BRL, CAD, CHF, EUR, GBP, JPY из открытого API (см. [API](#api)), запросы через RTK Query.
+- Флаги с [flagcdn.com](https://flagcdn.com) по коду страны, `loading="lazy"`.
+- Колонки как в макете: Surrender, Buy, Course, Change, Time.
+- По клику на строку открывается график динамики выбранной валюты к USD с периодами 1W, 1M, 3M, 6M и 1Y. Выбранная валюта и период хранятся в адресе (`/rates?currency=EUR&period=1M`), поэтому ссылкой можно поделиться. Битый адрес (`period=7d`, `currency=XXX`) исправляется сам.
+- Loading: скелетоны таблицы, даты и графика. Error: сообщение и кнопка Try again отдельно у таблицы и у графика.
+- График (recharts) грузится лениво, только когда выбрана валюта.
+
+### 3. Форма карточки
+
+- React Hook Form + zod: Title, Description и Priority обязательные; Status, Assignee и Deadline — нет.
+- Теги: до 5 штук по 20 символов, добавляются по Enter или запятой, можно вставить список через запятую, повторы без учёта регистра не добавляются.
+- Картинки: до 6 файлов по 5 МБ, drag & drop или выбор файла, превью и удаление.
+- При отправке имитируется запрос (600 мс), затем `alert` с введёнными данными (вместо картинок — имена файлов) и переход на превью карточки.
+- Превью — отдельная страница по макету. Компонент `CardView` получает карточку только через props. С превью можно вернуться к редактированию: форма откроется с сохранёнными данными.
+
+### Общие требования
+
+- Только функциональные компоненты и хуки.
+- Адаптив: desktop (от 1200px), tablet (768–1199px), mobile (до 767px).
+  - На телефоне меню переезжает вниз, форма становится в одну колонку, таблица прокручивается вбок с закреплённой колонкой валюты.
+  - На планшете и телефоне график открывается под таблицей, и страница прокручивается к нему.
+- TypeScript без `any`, структура по Feature-Sliced Design.
+
+## API
+
+**[Frankfurter](https://frankfurter.dev)** — `https://api.frankfurter.dev/v1`
+
+Почему он:
+
+- открытый, без ключа и регистрации, с CORS — можно ходить прямо из браузера;
+- данные Европейского центробанка;
+- история за любой период одним запросом — удобно для графика.
+
+Используется один эндпоинт — курсы за диапазон дат:
+
 ```
+GET /v1/{start_date}..?base=USD&symbols=AUD,BRL,CAD,CHF,EUR,GBP,JPY
+```
+
+- **Таблица:** диапазон за последние 10 дней. Из ответа берутся две последние даты — текущий курс и предыдущий рабочий день для колонки Change. Один запрос вместо двух, и не нужно вычислять, какой день был рабочим.
+- **График:** тот же запрос с одной валютой и началом периода: 7, 30, 90, 180 или 365 дней назад.
+
+Особенности, которые стоит знать:
+
+- ЕЦБ публикует курсы только в рабочие дни, примерно в 16:00 по CET. В выходные таблица показывает курс пятницы.
+- API отдаёт только средний курс. Surrender и Buy — расчётные: +2% и −1,5% от него.
+- Time — время, когда данные получены приложением, а не время курса.
+- В макете есть BGN, но с 2026 года Болгария перешла на евро, и курс BGN больше не публикуется, поэтому валюты нет в таблице.
+- Ответ v1 содержит заголовок `deprecation` — у API вышла v2. Переход на неё — небольшая правка в `currencyApi`.
+- Браузер кеширует ответы на сутки (`cache-control` от API). Чтобы увидеть скелетон, включите в DevTools «Disable cache».
+
+## Стек
+
+| Задача    | Что использовано                                      |
+| --------- | ----------------------------------------------------- |
+| UI        | React 19, TypeScript 6, SCSS-модули                   |
+| Сборка    | Vite 8                                                |
+| Маршруты  | React Router 8, страницы через `lazy` + `Suspense`    |
+| Состояние | Redux Toolkit                                         |
+| Запросы   | RTK Query                                             |
+| Формы     | React Hook Form + zod                                 |
+| График    | Recharts                                              |
+| Тесты     | Jest 30 + React Testing Library, компиляция через SWC |
+| Качество  | ESLint, Prettier                                      |
+| Деплой    | Vercel                                                |
+
+## Структура
+
+Feature-Sliced Design: слой может импортировать только слои ниже себя, каждый срез отдаёт наружу публичный API через `index.ts`.
+
+```
+src/
+  app/        роутер, layout, store, глобальные стили
+  pages/      login, rates, card-form, card-preview, not-found
+  widgets/    sidebar, rates-table, rate-chart
+  features/   auth, logout, card-form
+  entities/   session, currency, card
+  shared/     UI-компоненты, утилиты, конфиг API
+```
+
+Осознанное исключение: типизированные хуки `useAppSelector` и `useAppDispatch` лежат в `app/store` и импортируются из нижних слоёв. Типы стора по определению знают обо всех слайсах, а выносить их в `shared` значит протаскивать туда типы всех сущностей.
+
+## Решения, которые не видны сразу
+
+- **Стили.** Цвета, размеры шрифтов, радиусы и тени — CSS-переменные в `app/styles/_tokens.scss` из макета. Отступы и шрифты в `rem` (функция `rem()`), чтобы интерфейс масштабировался вместе с настройкой шрифта в браузере. Брейкпоинты — миксины `tablet` и `mobile` (desktop-first, макет только для 1440px).
+- **Строка таблицы целиком кликабельна.** Клик обрабатывает строка `<tr>`, а внутри первой ячейки стоит кнопка с `aria-pressed` для клавиатуры: Enter и Space дают `click`, который всплывает до строки. Так выбор работает и с закреплённой на телефоне первой колонкой.
+- **Пункт меню Cards** активен на всём разделе `/cards/*`, включая превью. Поэтому это обычный `Link` с вычисляемым `aria-current`: `NavLink` поставил бы его только на точном совпадении адреса.
+- **Ошибка загрузки страницы.** У маршрутов внутри layout свой `errorElement`, поэтому при ошибке (например, после нового деплоя не загрузился чанк) меню остаётся на месте, а страница предлагает перезагрузку.
+- **Иконки меню** — эмодзи из макета, экспортированные из Figma как SVG, чтобы меню выглядело одинаково на всех ОС.
+
+## Ограничения и что упрощено
+
+- **Карточка живёт только в памяти (Redux).** Картинки хранятся как `blob:`-ссылки, которые не переживают перезагрузку, поэтому карточка не сохраняется в `localStorage`. После перезагрузки превью показывает «No card yet».
+- **Заголовок формы** при редактировании остаётся «Create New Card», как в макете.
+- **Поле даты** — нативный `<input type="date">`, его формат зависит от языка браузера.
+- **Logout** срабатывает сразу, без подтверждения.
+- **Иконки меню** — эмодзи Apple из макета. Для продакшена их нужно заменить на иконки с открытой лицензией.
+
+## Тесты
+
+```bash
+npm test
+```
+
+20 тестов в 6 файлах, лежат рядом с проверяемым кодом (`*.test.ts(x)`):
+
+- чистые функции: цвета тегов, форматирование и направление изменения курсов, проверка кода валюты;
+- `sessionSlice`: вход и выход;
+- схема карточки: обязательные поля, пустые необязательные поля → `undefined`, лимиты тегов;
+- `LoginForm`: ошибки под полями, вход с демо-данными, ошибка при неверном пароле;
+- маршруты: гость уходит на `/login` и после входа возвращается на исходную страницу, вошедший со `/login` уходит на `/rates`.
+
+Настройка Jest для Vite-проекта требует пары обходов, они лежат в корне:
+
+- `jest.transform.cjs` — SWC и замена `import.meta`, которого нет в CommonJS;
+- `jest.environment.cjs` — jsdom с Fetch API из Node, без него не работает React Router 8.
+
+## Что не сделано
+
+Из стека вакансии в проекте нет Storybook, Docker и Radix UI. Их нет и в моих прошлых проектах, а за четыре дня я сосредоточился на требованиях задания и тестах.
