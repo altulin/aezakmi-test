@@ -48,3 +48,15 @@
 .cellNumber {
   font-variant-numeric: tabular-nums;
 }
+
+.changeUp {
+  color: var(--color-success);
+}
+
+.changeDown {
+  color: var(--color-error);
+}
+
+.changeNeutral {
+  color: var(--color-text);
+}

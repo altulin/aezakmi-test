@@ -4,9 +4,19 @@ import {
   useGetLatestRatesQuery,
   getSellRate,
   getBuyRate,
+  getRateChange,
+  getChangeDirection,
   formatRate,
+  formatChange,
+  type ChangeDirection,
 } from '@/entities/currency';
 import styles from './RatesTable.module.scss';
+
+const changeClassMap: Record<ChangeDirection, string | undefined> = {
+  up: styles.changeUp,
+  down: styles.changeDown,
+  flat: styles.changeNeutral,
+};
 
 export const RatesTable = () => {
   const { data } = useGetLatestRatesQuery();
@@ -26,14 +36,26 @@ export const RatesTable = () => {
             <th scope="col" className={styles.colNumber}>
               Course
             </th>
+            <th scope="col" className={styles.colNumber}>
+              Change
+            </th>
           </tr>
         </thead>
         <tbody>
           {CURRENCIES.map((code) => {
             const course = data?.rates[code];
-
-            // Skip currencies missing from the API response
             if (course === undefined) return null;
+
+            const previous = data?.previousRates[code];
+            const change =
+              previous !== undefined
+                ? getRateChange(course, previous)
+                : undefined;
+
+            const changeClass =
+              change !== undefined
+                ? changeClassMap[getChangeDirection(change)]
+                : styles.changeNeutral;
 
             return (
               <tr key={code}>
@@ -50,6 +72,9 @@ export const RatesTable = () => {
                   {formatRate(getBuyRate(course))}
                 </td>
                 <td className={styles.cellNumber}>{formatRate(course)}</td>
+                <td className={`${styles.cellNumber} ${changeClass ?? ''}`}>
+                  {change !== undefined ? formatChange(change) : '—'}
+                </td>
               </tr>
             );
           })}
