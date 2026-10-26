@@ -24,6 +24,7 @@ npm run dev        # http://127.0.0.1:3000
 | `npm run lint`      | ESLint                                       |
 | `npm run typecheck` | TypeScript без сборки                        |
 | `npm run format`    | Prettier                                     |
+| `npm run storybook` | Storybook на порту 6006                      |
 
 Переменные окружения не нужны: API открытый и без ключа.
 
@@ -92,18 +93,19 @@ GET /v1/{start_date}..?base=USD&symbols=AUD,BRL,CAD,CHF,EUR,GBP,JPY
 
 ## Стек
 
-| Задача    | Что использовано                                      |
-| --------- | ----------------------------------------------------- |
-| UI        | React 19, TypeScript 6, SCSS-модули                   |
-| Сборка    | Vite 8                                                |
-| Маршруты  | React Router 8, страницы через `lazy` + `Suspense`    |
-| Состояние | Redux Toolkit                                         |
-| Запросы   | RTK Query                                             |
-| Формы     | React Hook Form + zod                                 |
-| График    | Recharts                                              |
-| Тесты     | Jest 30 + React Testing Library, компиляция через SWC |
-| Качество  | ESLint, Prettier                                      |
-| Деплой    | Vercel                                                |
+| Задача     | Что использовано                                      |
+| ---------- | ----------------------------------------------------- |
+| UI         | React 19, TypeScript 6, SCSS-модули                   |
+| Сборка     | Vite 8                                                |
+| Маршруты   | React Router 8, страницы через `lazy` + `Suspense`    |
+| Состояние  | Redux Toolkit                                         |
+| Запросы    | RTK Query                                             |
+| Формы      | React Hook Form + zod                                 |
+| График     | Recharts                                              |
+| Тесты      | Jest 30 + React Testing Library, компиляция через SWC |
+| Компоненты | Storybook 10                                          |
+| Качество   | ESLint, Prettier                                      |
+| Деплой     | Vercel                                                |
 
 ## Структура
 
@@ -156,6 +158,21 @@ npm test
 - `jest.transform.cjs` — SWC и замена `import.meta`, которого нет в CommonJS;
 - `jest.environment.cjs` — jsdom с Fetch API из Node, без него не работает React Router 8.
 
+## Storybook
+
+```bash
+npm run storybook        # http://localhost:6006
+npm run build-storybook  # статическая сборка в storybook-static/
+```
+
+Истории лежат рядом с компонентами (`*.stories.tsx`) и используют те же глобальные стили и токены, что и приложение:
+
+- `Shared/Button` — primary, secondary, размер md, загрузка, disabled;
+- `Shared/TextField` — с иконкой, с подписью, с ошибкой, disabled;
+- `Shared/Skeleton` — строки таблицы при загрузке;
+- `Entities/Card/TagChip` — цвета тегов из макета, тег с кнопкой удаления;
+- `Entities/Card/CardView` — карточка из макета, только обязательные поля, средний приоритет, длинный текст без пробелов.
+
 ## Что не сделано
 
-Из стека вакансии в проекте нет Storybook, Docker и Radix UI. Их нет и в моих прошлых проектах, а за четыре дня я сосредоточился на требованиях задания и тестах.
+Из стека вакансии в проекте нет Docker и Radix UI. Их нет и в моих прошлых проектах, а за четыре дня я сосредоточился на требованиях задания, тестах и Storybook.
