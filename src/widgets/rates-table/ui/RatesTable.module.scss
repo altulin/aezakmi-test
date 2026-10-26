@@ -10,7 +10,8 @@
   padding: 0 rem(16) rem(8);
 
   @include mobile {
-    padding: 0 rem(8) rem(8);
+    // No left padding: the sticky first column sits right at the edge
+    padding: 0 rem(8) rem(8) 0;
   }
 }
 
@@ -140,6 +141,39 @@
   outline: 2px solid var(--color-accent);
   outline-offset: -2px;
   border-radius: var(--radius-md);
+
+  // On phones the sticky first cell clips this ring to one cell,
+  // so the ring is drawn on the row cells instead (below)
+  @include mobile {
+    outline: none;
+  }
+}
+
+/* Focus ring around the whole row on phones: inset shadows on every cell */
+.row:has(.currencyBtn:focus-visible) td {
+  @include mobile {
+    box-shadow:
+      inset 0 2px var(--color-accent),
+      inset 0 -2px var(--color-accent);
+  }
+}
+
+.row:has(.currencyBtn:focus-visible) td:first-child {
+  @include mobile {
+    box-shadow:
+      inset 2px 0 var(--color-accent),
+      inset 0 2px var(--color-accent),
+      inset 0 -2px var(--color-accent);
+  }
+}
+
+.row:has(.currencyBtn:focus-visible) td:last-child {
+  @include mobile {
+    box-shadow:
+      inset -2px 0 var(--color-accent),
+      inset 0 2px var(--color-accent),
+      inset 0 -2px var(--color-accent);
+  }
 }
 
 .currency {
@@ -203,4 +237,24 @@
   font-weight: 400;
   color: var(--color-text-muted);
   margin-bottom: rem(16);
+}
+
+/* --- Sticky currency column on phones --- */
+
+/* The table scrolls sideways there, the currency stays in view */
+.table th:first-child,
+.table td:first-child {
+  @include mobile {
+    position: sticky;
+    left: 0;
+    z-index: 1;
+  }
+}
+
+/* Opaque so scrolled cells don't show through. :where() keeps specificity
+   at zero, so the hover and selected backgrounds above still win. */
+:where(.table th:first-child, .table td:first-child) {
+  @include mobile {
+    background-color: var(--color-surface);
+  }
 }

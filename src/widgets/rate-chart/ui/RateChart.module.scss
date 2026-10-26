@@ -19,6 +19,8 @@
 
   // Under the table: full width, no stretching to the window height
   @include tablet {
+    // Space above the panel when the page scrolls to it
+    scroll-margin-top: var(--page-padding-top);
     position: static;
     width: 100%;
     min-height: 0;
@@ -86,6 +88,7 @@
   font-size: var(--fs-sm);
   font-weight: 600;
   line-height: 1;
+  white-space: nowrap;
 }
 
 .badge_up {

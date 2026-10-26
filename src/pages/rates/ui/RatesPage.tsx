@@ -1,3 +1,4 @@
+import { useEffect, useRef } from 'react';
 import { useSearchParams } from 'react-router';
 import {
   useGetLatestRatesQuery,
@@ -9,6 +10,7 @@ import {
 } from '@/entities/currency';
 import { RatesTable } from '@/widgets/rates-table';
 import { RateChart } from '@/widgets/rate-chart';
+import { TABLET_QUERY } from '@/shared/config/breakpoints';
 import { formatDate } from '@/shared/lib/date';
 import { Skeleton } from '@/shared/ui';
 import styles from './RatesPage.module.scss';
@@ -23,6 +25,49 @@ export const RatesPage = () => {
   const rawPeriod = searchParams.get('period');
   const period = isPeriod(rawPeriod) ? rawPeriod : DEFAULT_PERIOD;
 
+  // A broken link (?currency=XXX or ?period=7d) is fixed in the address bar,
+  // so the URL matches what is on screen. replace: no extra history entry.
+  useEffect(() => {
+    const isBadCurrency = rawCurrency !== null && !selected;
+    const isBadPeriod = rawPeriod !== null && !isPeriod(rawPeriod);
+    if (!isBadCurrency && !isBadPeriod) return;
+
+    setSearchParams(
+      (prev) => {
+        const next = new URLSearchParams(prev);
+        if (isBadCurrency) {
+          // Without a currency the period means nothing
+          next.delete('currency');
+          next.delete('period');
+        } else {
+          next.set('period', DEFAULT_PERIOD);
+        }
+        return next;
+      },
+      { replace: true }
+    );
+  }, [rawCurrency, rawPeriod, selected, setSearchParams]);
+
+  const chartRef = useRef<HTMLElement>(null);
+  // Set only by a click, so opening a link with ?currency= doesn't scroll
+  const shouldScrollToChart = useRef(false);
+
+  // On tablet and mobile the chart opens under the table, often below the
+  // first screen: bring it into view so the user sees that it appeared
+  useEffect(() => {
+    if (!selected || !shouldScrollToChart.current) return;
+    shouldScrollToChart.current = false;
+
+    if (!window.matchMedia(TABLET_QUERY).matches) return;
+    const reduceMotion = window.matchMedia(
+      '(prefers-reduced-motion: reduce)'
+    ).matches;
+    chartRef.current?.scrollIntoView({
+      behavior: reduceMotion ? 'auto' : 'smooth',
+      block: 'start',
+    });
+  }, [selected]);
+
   const handleSelect = (code: CurrencyCode) => {
     if (selected === code) {
       setSearchParams((prev) => {
@@ -31,6 +76,7 @@ export const RatesPage = () => {
         return next;
       });
     } else {
+      shouldScrollToChart.current = true;
       setSearchParams((prev) => {
         const next = new URLSearchParams(prev);
         next.set('currency', code);
@@ -71,6 +117,7 @@ export const RatesPage = () => {
       </div>
       {selected && (
         <RateChart
+          ref={chartRef}
           currency={selected}
           period={period}
           onPeriodChange={handlePeriodChange}

@@ -124,15 +124,18 @@ export const RatesTable = ({ selected, onSelect }: RatesTableProps) => {
               const isSelected = selected === code;
 
               return (
+                // The click is handled by the row, so the whole row works even
+                // when the first cell is sticky (mobile). The button is the
+                // keyboard target: Enter/Space fire a click that bubbles here.
                 <tr
                   key={code}
                   className={`${styles.row} ${isSelected ? styles.rowSelected : ''}`.trim()}
+                  onClick={() => onSelect(code)}
                 >
                   <td>
                     <button
                       type="button"
                       className={styles.currencyBtn}
-                      onClick={() => onSelect(code)}
                       aria-pressed={isSelected}
                     >
                       <span className={styles.currency}>

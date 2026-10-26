@@ -1,4 +1,4 @@
-import { lazy, Suspense } from 'react';
+import { lazy, Suspense, type Ref } from 'react';
 import {
   BASE_CURRENCY,
   CurrencyFlag,
@@ -24,6 +24,7 @@ interface RateChartProps {
   period: Period;
   onPeriodChange: (period: Period) => void;
   onClose: () => void;
+  ref?: Ref<HTMLElement>;
 }
 
 export const RateChart = ({
@@ -31,6 +32,7 @@ export const RateChart = ({
   period,
   onPeriodChange,
   onClose,
+  ref,
 }: RateChartProps) => {
   const {
     data: history,
@@ -61,7 +63,7 @@ export const RateChart = ({
     percentChange !== undefined ? formatPercentChange(percentChange) : '—';
 
   return (
-    <aside className={styles.panel}>
+    <aside ref={ref} className={styles.panel}>
       <header className={styles.header}>
         <div>
           <h2 className={styles.title}>
@@ -123,13 +125,18 @@ export const RateChart = ({
             ) : null}
           </div>
 
-          <div className={styles.periods}>
+          <div
+            className={styles.periods}
+            role="group"
+            aria-label="Chart period"
+          >
             {(Object.keys(PERIODS) as Period[]).map((p) => (
               <button
                 key={p}
                 type="button"
                 className={`${styles.periodBtn} ${p === period ? styles.periodBtnActive : ''}`.trim()}
                 onClick={() => onPeriodChange(p)}
+                aria-pressed={p === period}
               >
                 {p}
               </button>
