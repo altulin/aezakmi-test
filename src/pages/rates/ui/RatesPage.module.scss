@@ -4,7 +4,7 @@
 .layout {
   display: flex;
   align-items: flex-start;
-  gap: rem(24);
+  gap: rem(20);
 
   @include tablet {
     flex-direction: column;
@@ -51,4 +51,12 @@
   width: rem(140);
   height: rem(32);
   border-radius: var(--radius-md);
+}
+
+.withChart {
+  margin-inline: calc(var(--page-padding-top) - var(--page-padding));
+
+  @include tablet {
+    margin-inline: 0;
+  }
 }

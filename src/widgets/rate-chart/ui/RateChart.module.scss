@@ -2,7 +2,10 @@
 @use '@/app/styles/breakpoints' as *;
 
 .panel {
-  width: rem(380);
+  display: flex;
+  flex-direction: column;
+  gap: rem(20);
+  width: rem(420);
   flex-shrink: 0;
   background-color: var(--color-surface);
   border-radius: var(--radius-xl);
@@ -12,7 +15,7 @@
   @media (min-height: 640px) {
     position: sticky;
     top: var(--page-padding-top);
-    min-height: calc(100dvh - var(--page-padding-top) - var(--page-padding));
+    min-height: calc(100dvh - 2 * var(--page-padding-top));
   }
 
   @include tablet {
@@ -31,7 +34,6 @@
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
-  margin-bottom: rem(24);
 }
 
 .title {
@@ -45,7 +47,7 @@
 
 .subtitle {
   margin-top: rem(4);
-  font-size: var(--fs-lg);
+  font-size: var(--fs-sm);
   color: var(--color-text-muted);
 }
 
@@ -67,8 +69,7 @@
   display: flex;
   align-items: center;
   gap: rem(12);
-  margin-bottom: rem(32);
-  min-height: rem(43);
+  min-height: rem(44);
 }
 
 .currentRate {
@@ -79,11 +80,11 @@
 }
 
 .badge {
-  padding: rem(4) rem(8);
-  border-radius: var(--radius-md);
-  font-size: var(--fs-sm);
+  padding: rem(5) rem(10);
+  border-radius: var(--radius-sm);
+  font-size: var(--fs-md);
   font-weight: 600;
-  line-height: 1;
+  line-height: 1.2;
   white-space: nowrap;
 }
 
@@ -103,7 +104,6 @@
 }
 
 .chartArea {
-  margin-bottom: rem(24);
   width: 100%;
 }
 
@@ -113,24 +113,24 @@
 
 .chartArea .chartSkeleton {
   width: 100%;
-  height: rem(270);
-  border-radius: var(--radius-md);
+  height: rem(200);
+  border-radius: var(--radius-lg);
 }
 
 .periods {
   display: flex;
+  flex-wrap: wrap;
   gap: rem(8);
-  width: 100%;
 }
 
 .periodBtn {
-  flex: 1;
-  padding: rem(10) 0;
-  background-color: var(--color-bg);
-  border: 1px solid transparent;
+  padding: rem(8) rem(16);
+  background-color: var(--color-field);
+  border: none;
   border-radius: var(--radius-md);
   font-size: var(--fs-sm);
-  font-weight: 500;
+  font-weight: 600;
+  line-height: 1.2;
   color: var(--color-text-muted);
   cursor: pointer;
   transition:
@@ -145,7 +145,6 @@
 .periodBtnActive {
   background-color: var(--color-primary);
   color: var(--color-text-inverse);
-  border-color: var(--color-primary);
 }
 
 .skeletonRate {

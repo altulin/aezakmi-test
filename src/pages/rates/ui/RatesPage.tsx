@@ -97,7 +97,9 @@ export const RatesPage = () => {
   };
 
   return (
-    <section className={styles.layout}>
+    <section
+      className={`${styles.layout} ${selected ? styles.withChart : ''}`.trim()}
+    >
       <div className={styles.main}>
         <header className={styles.header}>
           <h1 className={styles.title}>Exchange rates</h1>
