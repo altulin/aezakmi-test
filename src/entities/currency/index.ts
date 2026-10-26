@@ -14,6 +14,7 @@ export {
   getChangeDirection,
   formatRate,
   formatChange,
+  isCurrencyCode,
   SELL_MARKUP,
   BUY_DISCOUNT,
   type ChangeDirection,

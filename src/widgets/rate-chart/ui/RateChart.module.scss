@@ -1,0 +1,49 @@
+@use '@/app/styles/functions' as *;
+
+.panel {
+  width: rem(380);
+  flex-shrink: 0;
+  background-color: var(--color-surface);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-card);
+  padding: rem(24);
+
+  position: sticky;
+  top: var(--page-padding);
+  min-height: calc(100dvh - 2 * var(--page-padding));
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: rem(8);
+}
+
+.title {
+  display: flex;
+  align-items: center;
+  gap: rem(8);
+  font-size: rem(20);
+  font-weight: 700;
+  color: var(--color-text);
+}
+
+.closeBtn {
+  background: transparent;
+  border: none;
+  font-size: rem(20);
+  color: var(--color-text-muted);
+  cursor: pointer;
+  padding: rem(4);
+  line-height: 1;
+}
+
+.closeBtn:hover {
+  color: var(--color-text);
+}
+
+.subtitle {
+  font-size: var(--fs-lg);
+  color: var(--color-text-muted);
+}

@@ -33,17 +33,64 @@
   font-size: var(--fs-md);
   border-bottom: 1px solid var(--color-divider);
   vertical-align: middle;
+  transition: background-color var(--transition-fast);
 }
 
 .table tbody tr:last-child td {
   border-bottom: none;
 }
 
+.row {
+  position: relative;
+  cursor: pointer;
+}
+
+.row:hover td {
+  background-color: var(--color-bg);
+}
+
+.rowSelected td {
+  background-color: var(--color-accent-soft);
+  font-weight: 600;
+}
+
+.rowSelected:hover td {
+  background-color: var(--color-accent-soft);
+}
+
+.currencyBtn {
+  display: block;
+  width: 100%;
+  padding: 0;
+  margin: 0;
+  background: transparent;
+  border: none;
+  text-align: left;
+  cursor: pointer;
+  font: inherit;
+  color: inherit;
+}
+
+.currencyBtn::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+}
+
+.currencyBtn:focus-visible {
+  outline: none;
+}
+
+.currencyBtn:focus-visible::after {
+  outline: 2px solid var(--color-accent);
+  outline-offset: -2px;
+  border-radius: var(--radius-md);
+}
+
 .currency {
   display: inline-flex;
   align-items: center;
   gap: rem(8);
-  font-weight: 500;
 }
 
 .colNumber,
@@ -63,12 +110,12 @@
   color: var(--color-text);
 }
 
-.skeletonCurrency {
-  width: rem(60) !important;
+.table .skeletonCurrency {
+  width: rem(60);
 }
 
-.skeletonNumber {
-  width: 70% !important;
+.table .skeletonNumber {
+  width: 70%;
 }
 
 .error {

@@ -1,3 +1,5 @@
+import { CURRENCIES, type CurrencyCode } from '../config/currencies';
+
 export const SELL_MARKUP = 0.02;
 export const BUY_DISCOUNT = 0.015;
 
@@ -29,4 +31,11 @@ export const getChangeDirection = (change: number): ChangeDirection => {
   if (rounded > 0) return 'up';
   if (rounded < 0) return 'down';
   return 'flat';
+};
+
+export const isCurrencyCode = (value: unknown): value is CurrencyCode => {
+  return (
+    typeof value === 'string' &&
+    (CURRENCIES as readonly string[]).includes(value)
+  );
 };

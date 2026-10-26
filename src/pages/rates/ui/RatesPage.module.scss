@@ -1,5 +1,18 @@
 @use '@/app/styles/functions' as *;
 
+.layout {
+  display: flex;
+  align-items: flex-start;
+  gap: rem(24);
+}
+
+.main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
 .header {
   display: flex;
   align-items: center;

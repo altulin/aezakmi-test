@@ -9,6 +9,7 @@ import {
   formatRate,
   formatChange,
   type ChangeDirection,
+  type CurrencyCode,
 } from '@/entities/currency';
 import { Button, Skeleton } from '@/shared/ui';
 import { formatTime } from '@/shared/lib/date';
@@ -22,7 +23,12 @@ const changeClassMap: Record<ChangeDirection, string | undefined> = {
 
 const SKELETON_ROWS = Array.from({ length: 7 });
 
-export const RatesTable = () => {
+interface RatesTableProps {
+  selected?: CurrencyCode;
+  onSelect: (code: CurrencyCode) => void;
+}
+
+export const RatesTable = ({ selected, onSelect }: RatesTableProps) => {
   const { data, fulfilledTimeStamp, isLoading, isError, isFetching, refetch } =
     useGetLatestRatesQuery();
 
@@ -46,7 +52,6 @@ export const RatesTable = () => {
   return (
     <div className={styles.card}>
       <table className={styles.table} aria-busy={isLoading}>
-        {/* ... thead и tbody остаются без изменений ... */}
         <thead>
           <tr>
             <th scope="col">Currency</th>
@@ -59,12 +64,16 @@ export const RatesTable = () => {
             <th scope="col" className={styles.colNumber}>
               Course
             </th>
-            <th scope="col" className={styles.colNumber}>
-              Change
-            </th>
-            <th scope="col" className={styles.colNumber}>
-              Time
-            </th>
+            {!selected && (
+              <th scope="col" className={styles.colNumber}>
+                Change
+              </th>
+            )}
+            {!selected && (
+              <th scope="col" className={styles.colNumber}>
+                Time
+              </th>
+            )}
           </tr>
         </thead>
         <tbody>
@@ -83,12 +92,16 @@ export const RatesTable = () => {
                 <td className={styles.cellNumber}>
                   <Skeleton className={styles.skeletonNumber} />
                 </td>
-                <td className={styles.cellNumber}>
-                  <Skeleton className={styles.skeletonNumber} />
-                </td>
-                <td className={styles.cellNumber}>
-                  <Skeleton className={styles.skeletonNumber} />
-                </td>
+                {!selected && (
+                  <td className={styles.cellNumber}>
+                    <Skeleton className={styles.skeletonNumber} />
+                  </td>
+                )}
+                {!selected && (
+                  <td className={styles.cellNumber}>
+                    <Skeleton className={styles.skeletonNumber} />
+                  </td>
+                )}
               </tr>
             ))}
 
@@ -108,13 +121,25 @@ export const RatesTable = () => {
                   ? changeClassMap[getChangeDirection(change)]
                   : styles.changeNeutral;
 
+              const isSelected = selected === code;
+
               return (
-                <tr key={code}>
+                <tr
+                  key={code}
+                  className={`${styles.row} ${isSelected ? styles.rowSelected : ''}`.trim()}
+                >
                   <td>
-                    <span className={styles.currency}>
-                      <CurrencyFlag currency={code} />
-                      {code}
-                    </span>
+                    <button
+                      type="button"
+                      className={styles.currencyBtn}
+                      onClick={() => onSelect(code)}
+                      aria-pressed={isSelected}
+                    >
+                      <span className={styles.currency}>
+                        <CurrencyFlag currency={code} />
+                        {code}
+                      </span>
+                    </button>
                   </td>
                   <td className={styles.cellNumber}>
                     {formatRate(getSellRate(course))}
@@ -123,12 +148,20 @@ export const RatesTable = () => {
                     {formatRate(getBuyRate(course))}
                   </td>
                   <td className={styles.cellNumber}>{formatRate(course)}</td>
-                  <td className={`${styles.cellNumber} ${changeClass ?? ''}`}>
-                    {change !== undefined ? formatChange(change) : '—'}
-                  </td>
-                  <td className={styles.cellNumber}>
-                    {fulfilledTimeStamp ? formatTime(fulfilledTimeStamp) : '—'}
-                  </td>
+                  {!selected && (
+                    <td
+                      className={`${styles.cellNumber} ${changeClass ?? ''}`.trim()}
+                    >
+                      {change !== undefined ? formatChange(change) : '—'}
+                    </td>
+                  )}
+                  {!selected && (
+                    <td className={styles.cellNumber}>
+                      {fulfilledTimeStamp
+                        ? formatTime(fulfilledTimeStamp)
+                        : '—'}
+                    </td>
+                  )}
                 </tr>
               );
             })}
