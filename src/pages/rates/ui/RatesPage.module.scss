@@ -1,9 +1,15 @@
 @use '@/app/styles/functions' as *;
+@use '@/app/styles/breakpoints' as *;
 
 .layout {
   display: flex;
   align-items: flex-start;
   gap: rem(24);
+
+  @include tablet {
+    flex-direction: column;
+    align-items: stretch;
+  }
 }
 
 .main {
@@ -16,7 +22,9 @@
 .header {
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
   justify-content: space-between;
+  gap: rem(12);
   margin-bottom: rem(24);
 }
 

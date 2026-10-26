@@ -1,4 +1,5 @@
 @use '@/app/styles/functions' as *;
+@use '@/app/styles/breakpoints' as *;
 
 .panel {
   width: rem(380);
@@ -8,9 +9,24 @@
   box-shadow: var(--shadow-card);
   padding: rem(24);
 
-  position: sticky;
-  top: var(--page-padding-top);
-  min-height: calc(100dvh - var(--page-padding-top) - var(--page-padding));
+  // Sticks next to the table only when the whole panel fits in the window;
+  // in a short window it scrolls with the page, so its bottom stays reachable
+  @media (min-height: 640px) {
+    position: sticky;
+    top: var(--page-padding-top);
+    min-height: calc(100dvh - var(--page-padding-top) - var(--page-padding));
+  }
+
+  // Under the table: full width, no stretching to the window height
+  @include tablet {
+    position: static;
+    width: 100%;
+    min-height: 0;
+  }
+
+  @include mobile {
+    padding: rem(16);
+  }
 }
 
 .header {

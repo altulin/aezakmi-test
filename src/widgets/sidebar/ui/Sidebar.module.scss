@@ -15,9 +15,8 @@
 }
 
 .logo {
-  font-size: rem(32);
+  display: flex;
   margin-bottom: rem(32);
-  text-decoration: none;
 }
 
 .nav {
@@ -53,7 +52,8 @@
 }
 
 .icon {
-  font-size: rem(20);
+  // Block keeps the image off the text baseline, no extra gap below it
+  display: block;
 }
 
 .label {

@@ -1,11 +1,17 @@
 @use '@/app/styles/functions' as *;
+@use '@/app/styles/breakpoints' as *;
 
 .card {
   background-color: var(--color-surface);
   border-radius: var(--radius-xl);
   box-shadow: var(--shadow-card);
-  overflow: hidden;
+  // Clips the rounded corners; on phones also scrolls the table sideways
+  overflow-x: auto;
   padding: 0 rem(16) rem(8);
+
+  @include mobile {
+    padding: 0 rem(8) rem(8);
+  }
 }
 
 .table {
@@ -13,6 +19,10 @@
   border-collapse: collapse;
   table-layout: fixed;
   text-align: left;
+
+  @include mobile {
+    min-width: rem(520);
+  }
 }
 
 .table thead th,

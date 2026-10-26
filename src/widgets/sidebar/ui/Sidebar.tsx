@@ -1,5 +1,11 @@
 import { NavLink, Link, useMatch } from 'react-router';
 import { useLogout } from '@/features/logout';
+// Emoji from the mockup, exported from Figma, so the menu looks the same
+// on every OS instead of using the system emoji font
+import cardsIcon from '../assets/cards.svg';
+import logoIcon from '../assets/logo.svg';
+import logoutIcon from '../assets/logout.svg';
+import ratesIcon from '../assets/rates.svg';
 import styles from './Sidebar.module.scss';
 
 export const Sidebar = () => {
@@ -15,14 +21,18 @@ export const Sidebar = () => {
   return (
     <aside className={styles.sidebar}>
       <Link to="/rates" className={styles.logo} aria-label="Home">
-        💰
+        <img src={logoIcon} alt="" width={24} height={24} />
       </Link>
 
       <nav className={styles.nav} aria-label="Main navigation">
         <NavLink to="/rates" className={getNavLinkClass}>
-          <span className={styles.icon} aria-hidden="true">
-            💱
-          </span>
+          <img
+            className={styles.icon}
+            src={ratesIcon}
+            alt=""
+            width={22}
+            height={22}
+          />
           <span className={styles.label}>Rates</span>
         </NavLink>
         {/* Plain Link: NavLink would set aria-current only on an exact
@@ -32,18 +42,26 @@ export const Sidebar = () => {
           className={getNavLinkClass({ isActive: isCardsSection })}
           aria-current={isCardsSection ? 'page' : undefined}
         >
-          <span className={styles.icon} aria-hidden="true">
-            📋
-          </span>
+          <img
+            className={styles.icon}
+            src={cardsIcon}
+            alt=""
+            width={22}
+            height={22}
+          />
           <span className={styles.label}>Cards</span>
         </Link>
       </nav>
 
       <div className={styles.logout}>
         <button type="button" className={styles.logoutBtn} onClick={logout}>
-          <span className={styles.icon} aria-hidden="true">
-            🚪
-          </span>
+          <img
+            className={styles.icon}
+            src={logoutIcon}
+            alt=""
+            width={18}
+            height={18}
+          />
           <span className={styles.label}>Logout</span>
         </button>
       </div>
