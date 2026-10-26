@@ -1,7 +1,7 @@
 export const CardFormPage = () => {
   return (
-    <main>
+    <section>
       <h1>Create New Card</h1>
-    </main>
+    </section>
   );
 };

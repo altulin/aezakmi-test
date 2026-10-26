@@ -1,7 +1,7 @@
 export const CardPreviewPage = () => {
   return (
-    <main>
+    <section>
       <h1>Card Preview</h1>
-    </main>
+    </section>
   );
 };
