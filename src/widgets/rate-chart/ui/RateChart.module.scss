@@ -15,9 +15,9 @@
 
 .header {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: space-between;
-  margin-bottom: rem(8);
+  margin-bottom: rem(24);
 }
 
 .title {
@@ -27,6 +27,12 @@
   font-size: rem(20);
   font-weight: 700;
   color: var(--color-text);
+}
+
+.subtitle {
+  margin-top: rem(4);
+  font-size: var(--fs-lg);
+  color: var(--color-text-muted);
 }
 
 .closeBtn {
@@ -43,21 +49,68 @@
   color: var(--color-text);
 }
 
-.subtitle {
-  font-size: var(--fs-lg);
+.rateInfo {
+  display: flex;
+  align-items: center;
+  gap: rem(12);
+  margin-bottom: rem(32);
+  min-height: rem(43);
+}
+
+.currentRate {
+  font-size: var(--fs-display);
+  font-weight: 700;
+  line-height: 1;
+  color: var(--color-text);
+}
+
+.badge {
+  padding: rem(4) rem(8);
+  border-radius: var(--radius-md);
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  line-height: 1;
+}
+
+.badge_up {
+  color: var(--color-success);
+  background-color: var(--color-success-soft);
+}
+
+.badge_down {
+  color: var(--color-error);
+  background-color: var(--color-error-soft);
+}
+
+.badge_flat {
   color: var(--color-text-muted);
-  margin-bottom: rem(16);
+  background-color: var(--color-bg);
+}
+
+.chartArea {
+  margin-bottom: rem(24);
+  width: 100%;
+}
+
+.chartArea :global(.recharts-surface):focus:not(:focus-visible) {
+  outline: none;
+}
+
+.chartArea .chartSkeleton {
+  width: 100%;
+  height: rem(270);
+  border-radius: var(--radius-md);
 }
 
 .periods {
   display: flex;
   gap: rem(8);
-  margin-bottom: rem(24);
+  width: 100%;
 }
 
 .periodBtn {
   flex: 1;
-  padding: rem(8);
+  padding: rem(10) 0;
   background-color: var(--color-bg);
   border: 1px solid transparent;
   border-radius: var(--radius-md);
@@ -67,8 +120,7 @@
   cursor: pointer;
   transition:
     background-color var(--transition-fast),
-    color var(--transition-fast),
-    border-color var(--transition-fast);
+    color var(--transition-fast);
 }
 
 .periodBtn:hover {
@@ -76,21 +128,35 @@
 }
 
 .periodBtnActive {
-  background-color: var(--color-accent-soft);
-  color: var(--color-accent);
-  border-color: var(--color-accent);
+  background-color: var(--color-primary);
+  color: var(--color-text-inverse);
+  border-color: var(--color-primary);
 }
 
-.debug {
-  font-size: var(--fs-sm);
-  font-family: monospace;
-  background: #f5f5f5;
-  padding: rem(12);
+.skeletonRate {
+  width: rem(140);
+  height: rem(36);
+  border-radius: var(--radius-sm);
+}
+
+.skeletonBadge {
+  width: rem(70);
+  height: rem(24);
   border-radius: var(--radius-md);
-  overflow-x: auto;
 }
 
-.debug pre {
-  margin: rem(4) 0;
-  font-size: rem(11);
+.errorWrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: rem(16);
+  padding: rem(32) 0;
+  text-align: center;
+}
+
+.errorTitle {
+  font-size: var(--fs-lg);
+  font-weight: 600;
+  color: var(--color-text);
 }

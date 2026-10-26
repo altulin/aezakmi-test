@@ -1,15 +1,23 @@
+import { lazy, Suspense } from 'react';
 import {
   BASE_CURRENCY,
   CurrencyFlag,
   PERIODS,
   PERIOD_LABELS,
   useGetRateHistoryQuery,
+  getChangeDirection,
   getPercentChange,
   formatPercentChange,
+  formatRate,
   type CurrencyCode,
   type Period,
 } from '@/entities/currency';
+import { Button, Skeleton } from '@/shared/ui';
 import styles from './RateChart.module.scss';
+
+const RateAreaChart = lazy(() =>
+  import('./RateAreaChart').then((m) => ({ default: m.RateAreaChart }))
+);
 
 interface RateChartProps {
   currency: CurrencyCode;
@@ -28,27 +36,40 @@ export const RateChart = ({
     data: history,
     isLoading,
     isError,
+    isFetching,
     refetch,
   } = useGetRateHistoryQuery({
     currency,
     period,
   });
 
-  const firstThree = history?.slice(0, 3);
-  const lastThree = history?.slice(-3);
+  const lastValue =
+    history && history.length > 0
+      ? history[history.length - 1].value
+      : undefined;
+  const firstValue =
+    history && history.length > 0 ? history[0].value : undefined;
 
   const percentChange =
-    history && history.length >= 2
-      ? getPercentChange(history[0].value, history[history.length - 1].value)
+    firstValue !== undefined && lastValue !== undefined
+      ? getPercentChange(firstValue, lastValue)
       : undefined;
+
+  const direction =
+    percentChange !== undefined ? getChangeDirection(percentChange) : 'flat';
+  const formattedPercent =
+    percentChange !== undefined ? formatPercentChange(percentChange) : '—';
 
   return (
     <aside className={styles.panel}>
       <header className={styles.header}>
-        <h2 className={styles.title}>
-          <CurrencyFlag currency={currency} />
-          {currency} / {BASE_CURRENCY}
-        </h2>
+        <div>
+          <h2 className={styles.title}>
+            <CurrencyFlag currency={currency} />
+            {currency} / {BASE_CURRENCY}
+          </h2>
+          <p className={styles.subtitle}>{PERIOD_LABELS[period]}</p>
+        </div>
         <button
           type="button"
           className={styles.closeBtn}
@@ -59,51 +80,62 @@ export const RateChart = ({
         </button>
       </header>
 
-      <p className={styles.subtitle}>{PERIOD_LABELS[period]}</p>
-
-      <div className={styles.periods}>
-        {(Object.keys(PERIODS) as Period[]).map((p) => (
-          <button
-            key={p}
-            type="button"
-            className={`${styles.periodBtn} ${p === period ? styles.periodBtnActive : ''}`.trim()}
-            onClick={() => onPeriodChange(p)}
-          >
-            {p}
-          </button>
-        ))}
-      </div>
-
-      {isLoading && <p className={styles.debug}>Loading history...</p>}
-
-      {isError && (
-        <div className={styles.debug}>
-          <p>Error loading history.</p>
-          <button type="button" onClick={() => refetch()}>
-            Retry
-          </button>
+      {isError ? (
+        <div className={styles.errorWrapper} role="alert">
+          <p className={styles.errorTitle}>Failed to load data</p>
+          <Button onClick={() => refetch()} isLoading={isFetching}>
+            Try again
+          </Button>
         </div>
-      )}
+      ) : (
+        <>
+          <div className={styles.rateInfo}>
+            {isLoading ? (
+              <>
+                <Skeleton className={styles.skeletonRate} />
+                <Skeleton className={styles.skeletonBadge} />
+              </>
+            ) : (
+              <>
+                <div className={styles.currentRate}>
+                  {lastValue !== undefined ? formatRate(lastValue) : '—'}
+                </div>
+                <div
+                  className={`${styles.badge} ${styles[`badge_${direction}`]}`}
+                >
+                  {direction === 'up' && '▲ '}
+                  {direction === 'down' && '▼ '}
+                  {formattedPercent}
+                </div>
+              </>
+            )}
+          </div>
 
-      {!isLoading && !isError && history && (
-        <div className={styles.debug}>
-          <p>
-            <strong>Percent change:</strong>{' '}
-            {percentChange !== undefined
-              ? formatPercentChange(percentChange)
-              : '—'}
-          </p>
+          <div className={styles.chartArea}>
+            {isLoading ? (
+              <Skeleton className={styles.chartSkeleton} />
+            ) : history && history.length > 0 ? (
+              <Suspense
+                fallback={<Skeleton className={styles.chartSkeleton} />}
+              >
+                <RateAreaChart data={history} direction={direction} />
+              </Suspense>
+            ) : null}
+          </div>
 
-          <p>
-            <strong>First 3 points:</strong>
-          </p>
-          <pre>{JSON.stringify(firstThree, null, 2)}</pre>
-
-          <p>
-            <strong>Last 3 points:</strong>
-          </p>
-          <pre>{JSON.stringify(lastThree, null, 2)}</pre>
-        </div>
+          <div className={styles.periods}>
+            {(Object.keys(PERIODS) as Period[]).map((p) => (
+              <button
+                key={p}
+                type="button"
+                className={`${styles.periodBtn} ${p === period ? styles.periodBtnActive : ''}`.trim()}
+                onClick={() => onPeriodChange(p)}
+              >
+                {p}
+              </button>
+            ))}
+          </div>
+        </>
       )}
     </aside>
   );
