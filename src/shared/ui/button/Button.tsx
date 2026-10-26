@@ -2,7 +2,7 @@ import type { ComponentProps } from 'react';
 import styles from './Button.module.scss';
 
 export interface ButtonProps extends ComponentProps<'button'> {
-  variant?: 'primary' | 'secondary';
+  variant?: 'primary' | 'secondary' | 'danger';
   size?: 'md' | 'lg';
   isLoading?: boolean;
 }

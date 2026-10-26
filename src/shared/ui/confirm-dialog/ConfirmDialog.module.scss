@@ -1,0 +1,85 @@
+@use '@/app/styles/functions' as *;
+@use '@/app/styles/breakpoints' as *;
+
+.dialog {
+  width: min(#{rem(436)}, calc(100vw - #{rem(32)}));
+  max-width: none;
+  margin: auto;
+  padding: 0;
+  border: none;
+  border-radius: var(--radius-2xl);
+  background-color: var(--color-surface);
+  color: var(--color-text);
+  box-shadow: var(--shadow-panel);
+
+  &[open] {
+    animation: dialog-in var(--transition-base) both;
+  }
+
+  &::backdrop {
+    background-color: rgb(24 24 76 / 35%);
+  }
+
+  &[open]::backdrop {
+    animation: backdrop-in var(--transition-base) both;
+  }
+
+  @include mobile {
+    border-radius: var(--radius-lg);
+  }
+}
+
+.body {
+  padding: rem(48);
+  text-align: center;
+
+  @include mobile {
+    padding: rem(24) rem(16);
+  }
+}
+
+.title {
+  font-size: var(--fs-3xl);
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.description {
+  margin-top: rem(8);
+  font-size: var(--fs-lg);
+  font-weight: 500;
+  line-height: 1.45;
+  color: var(--color-text-muted);
+}
+
+.actions {
+  display: flex;
+  gap: rem(12);
+  margin-top: rem(32);
+
+  > * {
+    flex: 1;
+  }
+}
+
+@keyframes dialog-in {
+  from {
+    opacity: 0;
+    transform: translateY(#{rem(8)}) scale(0.98);
+  }
+
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes backdrop-in {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}

@@ -15,3 +15,6 @@ export type { SkeletonProps } from './skeleton/Skeleton';
 
 export { FormField } from './form-field/FormField';
 export type { FormFieldProps } from './form-field/FormField';
+
+export { ConfirmDialog } from './confirm-dialog/ConfirmDialog';
+export type { ConfirmDialogProps } from './confirm-dialog/ConfirmDialog';

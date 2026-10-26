@@ -47,6 +47,12 @@
   border: 1.5px solid var(--color-border);
 }
 
+.danger {
+  background-color: var(--color-error);
+  color: var(--color-text-inverse);
+  box-shadow: 0 4px 12px rgb(234 58 58 / 25%);
+}
+
 .spinner {
   width: rem(20);
   height: rem(20);
