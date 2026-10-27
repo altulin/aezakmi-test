@@ -5,15 +5,19 @@
   @include field(var(--radius-lg), var(--color-field));
   flex-wrap: wrap;
   gap: rem(8);
-  min-height: rem(46);
+  min-height: rem(47);
   padding: rem(8) rem(16);
   cursor: text;
+}
+
+.hasTags {
+  padding: rem(10) rem(12);
 }
 
 .input {
   flex: 1;
   min-width: rem(80);
-  height: rem(28);
+  height: rem(25);
   padding: 0;
   border: none;
   background: transparent;

@@ -114,23 +114,35 @@
 
 .removeBtn {
   position: absolute;
-  top: rem(4);
-  right: rem(4);
+  top: 0;
+  right: 0;
   display: flex;
   align-items: center;
   justify-content: center;
   width: rem(24);
   height: rem(24);
+  padding: 0;
+  border: none;
   border-radius: 50%;
-  background-color: var(--color-surface);
-  box-shadow: var(--shadow-card);
+  background-color: transparent;
   color: var(--color-error);
-  font-size: var(--fs-xs);
+  cursor: pointer;
   transition: background-color var(--transition-fast);
 
   &:hover {
-    background-color: var(--color-error-soft);
+    background-color: rgb(255 255 255 / 85%);
   }
+
+  &:focus-visible {
+    outline: 2px solid var(--color-error);
+    outline-offset: -2px;
+  }
+}
+
+.removeIcon {
+  display: block;
+  width: rem(12);
+  height: rem(12);
 }
 
 .name {

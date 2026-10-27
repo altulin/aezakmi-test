@@ -3,7 +3,6 @@
 .chip {
   display: inline-flex;
   align-items: center;
-  gap: rem(6);
   padding: rem(5) rem(10);
   border-radius: var(--radius-sm);
   font-size: var(--fs-xs);
@@ -11,22 +10,49 @@
   line-height: 1.2;
 }
 
-.removeBtn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  background: transparent;
+.removable {
+  position: relative;
   border: none;
-  padding: 0;
-  margin: 0;
-  color: currentColor;
-  opacity: 0.6;
+  font-family: inherit;
   cursor: pointer;
-  font-size: rem(10);
+
+  &:focus-visible {
+    outline: 2px solid currentColor;
+    outline-offset: 2px;
+  }
 }
 
-.removeBtn:hover {
-  opacity: 1;
+.removeIcon {
+  position: absolute;
+  top: rem(-6);
+  right: rem(-6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: rem(16);
+  height: rem(16);
+  border-radius: 50%;
+  background-color: var(--color-surface);
+  box-shadow: var(--shadow-card);
+  font-size: rem(8);
+  line-height: 1;
+  opacity: 0;
+  transform: scale(0.8);
+  pointer-events: none;
+  transition:
+    opacity var(--transition-fast),
+    transform var(--transition-fast);
+
+  .removable:hover &,
+  .removable:focus-visible & {
+    opacity: 1;
+    transform: none;
+  }
+
+  @media (hover: none) {
+    opacity: 1;
+    transform: none;
+  }
 }
 
 .purple {

@@ -108,11 +108,24 @@ export const TagsInput = ({
     <FormField label={label} error={error}>
       {(fieldProps) => (
         <div
-          className={`${styles.field} ${fieldProps.hasError ? styles.fieldError : ''}`.trim()}
+          className={[
+            styles.field,
+            value.length > 0 ? styles.hasTags : '',
+            fieldProps.hasError ? styles.fieldError : '',
+          ]
+            .filter(Boolean)
+            .join(' ')}
           onClick={() => inputRef.current?.focus()}
         >
           {value.map((tag, index) => (
-            <TagChip key={tag} tag={tag} onRemove={() => removeTag(index)} />
+            <TagChip
+              key={tag}
+              tag={tag}
+              onRemove={() => {
+                removeTag(index);
+                inputRef.current?.focus();
+              }}
+            />
           ))}
           <input
             ref={inputRef}

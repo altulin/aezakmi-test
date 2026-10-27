@@ -4,7 +4,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { Button, TextField } from '@/shared/ui';
 import { useAppDispatch } from '@/app/store/hooks';
 import { loginSchema, type LoginFormValues } from '../model/loginSchema';
-import { mockLogin, DEMO_CREDENTIALS } from '../api/mockLogin';
+import { mockLogin } from '../api/mockLogin';
 
 import styles from './LoginForm.module.scss';
 import { setSession } from '@/entities/session';
@@ -64,10 +64,6 @@ export const LoginForm = () => {
       <Button type="submit" isLoading={isSubmitting} className={styles.submit}>
         Login
       </Button>
-
-      <p className={styles.hint}>
-        Demo: {DEMO_CREDENTIALS.email} / {DEMO_CREDENTIALS.password}
-      </p>
     </form>
   );
 };

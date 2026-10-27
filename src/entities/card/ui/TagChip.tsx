@@ -1,3 +1,4 @@
+import type { KeyboardEvent } from 'react';
 import { getTagColor } from '../lib/getTagColor';
 import styles from './TagChip.module.scss';
 
@@ -7,21 +8,32 @@ interface TagChipProps {
 }
 
 export const TagChip = ({ tag, onRemove }: TagChipProps) => {
-  const color = getTagColor(tag);
+  const className = `${styles.chip} ${styles[getTagColor(tag)]}`;
+
+  if (!onRemove) {
+    return <span className={className}>{tag}</span>;
+  }
+
+  const handleKeyDown = (event: KeyboardEvent<HTMLButtonElement>) => {
+    if (event.key === 'Delete' || event.key === 'Backspace') {
+      event.preventDefault();
+      onRemove();
+    }
+  };
 
   return (
-    <span className={`${styles.chip} ${styles[color]}`}>
+    <button
+      type="button"
+      className={`${className} ${styles.removable}`}
+      onClick={onRemove}
+      onKeyDown={handleKeyDown}
+      aria-label={`Remove tag ${tag}`}
+      title="Remove tag"
+    >
       {tag}
-      {onRemove && (
-        <button
-          type="button"
-          className={styles.removeBtn}
-          onClick={onRemove}
-          aria-label={`Remove tag ${tag}`}
-        >
-          ✕
-        </button>
-      )}
-    </span>
+      <span className={styles.removeIcon} aria-hidden="true">
+        ✕
+      </span>
+    </button>
   );
 };
