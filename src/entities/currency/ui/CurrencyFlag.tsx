@@ -6,11 +6,9 @@ interface CurrencyFlagProps {
 }
 
 export const CurrencyFlag = ({ currency }: CurrencyFlagProps) => {
-  const country = CURRENCY_FLAGS[currency];
-
   return (
     <img
-      src={`https://flagcdn.com/${country}.svg`}
+      src={CURRENCY_FLAGS[currency]}
       alt=""
       width={20}
       height={15}
