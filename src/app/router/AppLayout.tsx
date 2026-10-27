@@ -8,9 +8,11 @@ export const AppLayout = () => {
     <div className={styles.layout}>
       <Sidebar />
       <main className={styles.content}>
-        <Suspense fallback={<div>Loading...</div>}>
-          <Outlet />
-        </Suspense>
+        <div className={styles.inner}>
+          <Suspense fallback={<div>Loading...</div>}>
+            <Outlet />
+          </Suspense>
+        </div>
       </main>
     </div>
   );

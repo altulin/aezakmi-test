@@ -21,3 +21,32 @@
     );
   }
 }
+
+.inner {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  width: 100%;
+  max-width: var(--content-max-width);
+  margin-right: auto;
+  margin-left: max(0px, calc((100% - var(--content-max-width)) / 2));
+
+  @include above-tablet {
+    transition: margin-left var(--transition-base);
+  }
+}
+
+.layout:has(aside[data-expanded]) .inner {
+  @include above-tablet {
+    margin-left: max(
+      0px,
+      calc(
+        (
+            100% - var(--content-max-width) - var(--sidebar-width-expanded) +
+              var(--sidebar-width)
+          ) /
+          2
+      )
+    );
+  }
+}

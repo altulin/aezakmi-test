@@ -1,6 +1,11 @@
 $bp-tablet: 1200px;
 $bp-mobile: 768px;
 
+$sidebar-width: 72;
+$sidebar-width-expanded: 240;
+$page-padding: 36;
+$content-max-width: 1600;
+
 @mixin tablet {
   @media (max-width: ($bp-tablet - 0.02px)) {
     @content;
@@ -15,6 +20,12 @@ $bp-mobile: 768px;
 
 @mixin above-mobile {
   @media (min-width: $bp-mobile) {
+    @content;
+  }
+}
+
+@mixin above-tablet {
+  @media (min-width: $bp-tablet) {
     @content;
   }
 }

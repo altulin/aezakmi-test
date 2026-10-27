@@ -58,10 +58,11 @@
   --shadow-panel: 0 8px 32px rgb(24 24 76 / 6%);
   --shadow-button: 0 4px 12px rgb(24 24 76 / 20%);
 
-  --sidebar-width: #{rem(72)};
-  --sidebar-width-expanded: #{rem(240)};
+  --sidebar-width: #{rem($sidebar-width)};
+  --sidebar-width-expanded: #{rem($sidebar-width-expanded)};
   --bottom-nav-height: #{rem(64)};
-  --page-padding: #{rem(36)};
+  --content-max-width: #{rem($content-max-width)};
+  --page-padding: #{rem($page-padding)};
   --page-padding-top: #{rem(28)};
 
   --transition-fast: 150ms ease;

@@ -8,24 +8,52 @@ import {
   sessionReducer,
   setSession,
 } from '@/entities/session';
+import { TABLET_ONLY_QUERY } from '@/shared/config/breakpoints';
 import { Sidebar } from './Sidebar';
 
 const renderSidebar = () => {
   const store = configureStore({ reducer: { session: sessionReducer } });
   store.dispatch(setSession('demo@example.com'));
-  const router = createMemoryRouter([{ path: '*', element: <Sidebar /> }], {
-    initialEntries: ['/cards/preview'],
-  });
+  const router = createMemoryRouter(
+    [
+      {
+        path: '*',
+        element: (
+          <>
+            <Sidebar />
+            <p>Page content</p>
+          </>
+        ),
+      },
+    ],
+    { initialEntries: ['/cards/preview'] }
+  );
   render(
     <Provider store={store}>
       <RouterProvider router={router} />
     </Provider>
   );
-  return { store, user: userEvent.setup() };
+  return { store, router, user: userEvent.setup() };
+};
+
+const mockTabletWidth = () => {
+  window.matchMedia = jest.fn((query: string) => ({
+    matches: query === TABLET_ONLY_QUERY,
+    media: query,
+    onchange: null,
+    addEventListener: jest.fn(),
+    removeEventListener: jest.fn(),
+    addListener: jest.fn(),
+    removeListener: jest.fn(),
+    dispatchEvent: jest.fn(),
+  }));
 };
 
 describe('Sidebar', () => {
   beforeEach(() => localStorage.clear());
+  afterEach(() => {
+    Reflect.deleteProperty(window, 'matchMedia');
+  });
 
   it('expands and collapses, and remembers the choice', async () => {
     const { user } = renderSidebar();
@@ -71,5 +99,47 @@ describe('Sidebar', () => {
     await user.click(screen.getByRole('button', { name: /Logout/ }));
     await user.click(screen.getByRole('button', { name: 'Log out' }));
     expect(selectIsAuthenticated(store.getState())).toBe(false);
+  });
+
+  describe('on tablet, where the menu overlays the page', () => {
+    beforeEach(mockTabletWidth);
+
+    it('starts collapsed even if the desktop choice was expanded', async () => {
+      localStorage.setItem('sidebar-expanded', 'true');
+      renderSidebar();
+
+      expect(
+        await screen.findByRole('button', { name: 'Expand menu' })
+      ).toBeInTheDocument();
+    });
+
+    it('closes after navigation, on Escape and on a click outside', async () => {
+      const { router, user } = renderSidebar();
+      const expand = () =>
+        user.click(screen.getByRole('button', { name: 'Expand menu' }));
+
+      await screen.findByRole('button', { name: 'Expand menu' });
+
+      await expand();
+      await user.click(screen.getByRole('link', { name: /Rates/ }));
+      expect(router.state.location.pathname).toBe('/rates');
+      expect(
+        screen.getByRole('button', { name: 'Expand menu' })
+      ).toBeInTheDocument();
+
+      await expand();
+      await user.keyboard('{Escape}');
+      expect(
+        screen.getByRole('button', { name: 'Expand menu' })
+      ).toBeInTheDocument();
+
+      await expand();
+      await user.click(screen.getByText('Page content'));
+      expect(
+        screen.getByRole('button', { name: 'Expand menu' })
+      ).toBeInTheDocument();
+
+      expect(localStorage.getItem('sidebar-expanded')).toBeNull();
+    });
   });
 });

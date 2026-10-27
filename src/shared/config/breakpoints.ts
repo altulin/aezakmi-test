@@ -3,3 +3,10 @@ export const MOBILE_MAX_WIDTH = 767.98;
 
 export const TABLET_QUERY = `(max-width: ${TABLET_MAX_WIDTH}px)`;
 export const MOBILE_QUERY = `(max-width: ${MOBILE_MAX_WIDTH}px)`;
+
+export const TABLET_ONLY_QUERY = `(min-width: ${MOBILE_MAX_WIDTH + 0.02}px) and (max-width: ${TABLET_MAX_WIDTH}px)`;
+
+export const matchesMedia = (query: string): boolean =>
+  typeof window !== 'undefined' &&
+  typeof window.matchMedia === 'function' &&
+  window.matchMedia(query).matches;
