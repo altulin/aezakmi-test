@@ -9,7 +9,8 @@ const swc = createTransformer({
   module: { type: 'commonjs' },
 });
 
-const IMPORT_META_STUB = '({ env: { DEV: false, PROD: false, MODE: "test" } })';
+const IMPORT_META_STUB =
+  '({ env: { DEV: false, PROD: false, MODE: "test", BASE_URL: "/" } })';
 
 const replaceImportMeta = (source) =>
   source.replace(/\bimport\.meta\b/g, IMPORT_META_STUB);

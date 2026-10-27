@@ -2,8 +2,9 @@
 
 Тестовое задание Aezakmi Group (Frontend React + TS): SPA из трёх страниц по макету в Figma — вход, таблица курсов валют с графиком и форма создания карточки задачи.
 
-- **Демо:** https://aezakmi-test.vercel.app
-- **Storybook:** https://aezakmi-test-storybook.vercel.app
+- **Демо:** https://altulin.github.io/aezakmi-test/
+- **Storybook:** https://altulin.github.io/aezakmi-test/storybook/
+- **Зеркало на Vercel:** https://aezakmi-test.vercel.app (домены `*.vercel.app` открываются из России не у всех провайдеров, поэтому основной адрес — GitHub Pages)
 - **Вход:** `alex.johnson@demo.app` / `kanban2026`
 - **Макет:** [Figma](https://www.figma.com/design/p3bs7nOd0noohqkGTjOvTm/Test-Task?node-id=0-1&t=yC6nWIOopGpPEzFP-1)
 
@@ -107,7 +108,14 @@ GET /v1/{start_date}..?base=USD&symbols=AUD,BRL,CAD,CHF,EUR,GBP,JPY
 | Тесты      | Jest 30 + React Testing Library, компиляция через SWC |
 | Компоненты | Storybook 10                                          |
 | Качество   | ESLint, Prettier                                      |
-| Деплой     | Vercel                                                |
+| Деплой     | GitHub Pages через GitHub Actions, зеркало на Vercel  |
+
+## Деплой
+
+На каждый push в `main` GitHub Actions ([.github/workflows/pages.yml](.github/workflows/pages.yml)) прогоняет lint, typecheck и тесты, собирает приложение и Storybook и публикует их на GitHub Pages.
+
+- Сайт там живёт в подпапке `/aezakmi-test/`: Vite получает её через переменную `BASE_PATH`, а роутер — через `basename` из `import.meta.env.BASE_URL`. Без переменной сборка идёт с корня, как на Vercel.
+- GitHub Pages не умеет отдавать `index.html` на любой адрес, поэтому при сборке рядом кладётся его копия `404.html` — прямые ссылки и обновление страницы работают.
 
 ## Структура
 
@@ -169,7 +177,7 @@ npm run storybook        # http://localhost:6006
 npm run build-storybook  # статическая сборка в storybook-static/
 ```
 
-Опубликованная версия: https://aezakmi-test-storybook.vercel.app
+Опубликованная версия: https://altulin.github.io/aezakmi-test/storybook/
 
 Истории лежат рядом с компонентами (`*.stories.tsx`) и используют те же глобальные стили и токены, что и приложение:
 
