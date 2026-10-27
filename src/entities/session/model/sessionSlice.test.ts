@@ -21,9 +21,9 @@ describe('sessionSlice', () => {
   it('logs in and out', () => {
     const store = createStore();
 
-    store.dispatch(setSession('demo@example.com'));
+    store.dispatch(setSession('alex.johnson@demo.app'));
     expect(selectIsAuthenticated(store.getState())).toBe(true);
-    expect(selectUserEmail(store.getState())).toBe('demo@example.com');
+    expect(selectUserEmail(store.getState())).toBe('alex.johnson@demo.app');
 
     store.dispatch(clearSession());
     expect(selectIsAuthenticated(store.getState())).toBe(false);

@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { NavLink, Link, useMatch } from 'react-router';
 import { useLogout } from '@/features/logout';
-import { matchesMedia, TABLET_ONLY_QUERY } from '@/shared/config/breakpoints';
+import { matchesMedia, TABLET_QUERY } from '@/shared/config/breakpoints';
 import { loadFromStorage, saveToStorage } from '@/shared/lib/storage';
 import { ConfirmDialog } from '@/shared/ui';
 import cardsIcon from '../assets/cards.svg';
@@ -12,7 +12,9 @@ import styles from './Sidebar.module.scss';
 
 const EXPANDED_STORAGE_KEY = 'sidebar-expanded';
 
-const isOverlayMode = () => matchesMedia(TABLET_ONLY_QUERY);
+const SIDEBAR_ID = 'app-sidebar';
+
+const isOverlayMode = () => matchesMedia(TABLET_QUERY);
 
 export const Sidebar = () => {
   const logout = useLogout();
@@ -64,7 +66,39 @@ export const Sidebar = () => {
 
   return (
     <>
+      <header className={styles.mobileBar}>
+        <button
+          type="button"
+          className={styles.menuBtn}
+          onClick={toggleExpanded}
+          aria-expanded={isExpanded}
+          aria-controls={SIDEBAR_ID}
+          aria-label="Open menu"
+        >
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth={2}
+            strokeLinecap="round"
+            aria-hidden="true"
+            focusable="false"
+          >
+            <path d="M4 6h16" />
+            <path d="M4 12h16" />
+            <path d="M4 18h16" />
+          </svg>
+        </button>
+        <span className={styles.mobileBrand}>
+          <img src={logoIcon} alt="" />
+          Dashboard
+        </span>
+      </header>
+
+      {isExpanded && <div className={styles.backdrop} aria-hidden="true" />}
+
       <aside
+        id={SIDEBAR_ID}
         ref={sidebarRef}
         className={[
           styles.sidebar,

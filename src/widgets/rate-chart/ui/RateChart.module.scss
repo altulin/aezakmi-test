@@ -19,7 +19,7 @@
   }
 
   @include tablet {
-    scroll-margin-top: var(--page-padding-top);
+    scroll-margin-top: calc(var(--page-padding-top) + var(--sticky-top-offset));
     position: static;
     width: 100%;
     min-height: 0;

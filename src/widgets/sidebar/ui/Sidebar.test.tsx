@@ -8,12 +8,12 @@ import {
   sessionReducer,
   setSession,
 } from '@/entities/session';
-import { TABLET_ONLY_QUERY } from '@/shared/config/breakpoints';
+import { TABLET_QUERY } from '@/shared/config/breakpoints';
 import { Sidebar } from './Sidebar';
 
 const renderSidebar = () => {
   const store = configureStore({ reducer: { session: sessionReducer } });
-  store.dispatch(setSession('demo@example.com'));
+  store.dispatch(setSession('alex.johnson@demo.app'));
   const router = createMemoryRouter(
     [
       {
@@ -38,7 +38,7 @@ const renderSidebar = () => {
 
 const mockTabletWidth = () => {
   window.matchMedia = jest.fn((query: string) => ({
-    matches: query === TABLET_ONLY_QUERY,
+    matches: query === TABLET_QUERY,
     media: query,
     onchange: null,
     addEventListener: jest.fn(),

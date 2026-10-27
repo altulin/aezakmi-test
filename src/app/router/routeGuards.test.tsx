@@ -8,7 +8,7 @@ import { ProtectedRoute } from './ProtectedRoute';
 
 const renderAt = (path: string, isLoggedIn: boolean) => {
   const store = configureStore({ reducer: { session: sessionReducer } });
-  if (isLoggedIn) store.dispatch(setSession('demo@example.com'));
+  if (isLoggedIn) store.dispatch(setSession('alex.johnson@demo.app'));
 
   const router = createMemoryRouter(
     [
@@ -50,7 +50,7 @@ describe('route guards', () => {
     await screen.findByRole('heading', { name: 'Login page' });
 
     act(() => {
-      store.dispatch(setSession('demo@example.com'));
+      store.dispatch(setSession('alex.johnson@demo.app'));
     });
 
     expect(

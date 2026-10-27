@@ -47,7 +47,7 @@ describe('LoginForm', () => {
   it('logs in with the demo credentials', async () => {
     const { store, user } = renderForm();
 
-    await fillAndSubmit(user, 'demo@example.com', 'demo123');
+    await fillAndSubmit(user, 'alex.johnson@demo.app', 'kanban2026');
 
     await waitFor(
       () => expect(selectIsAuthenticated(store.getState())).toBe(true),
@@ -58,7 +58,7 @@ describe('LoginForm', () => {
   it('shows an error for wrong credentials', async () => {
     const { store, user } = renderForm();
 
-    await fillAndSubmit(user, 'demo@example.com', 'wrong-password');
+    await fillAndSubmit(user, 'alex.johnson@demo.app', 'wrong-password');
 
     expect(
       await screen.findByRole('alert', {}, { timeout: 2000 })

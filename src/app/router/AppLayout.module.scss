@@ -5,6 +5,10 @@
   display: flex;
   min-height: 100dvh;
   background-color: var(--color-bg);
+
+  @include mobile {
+    flex-direction: column;
+  }
 }
 
 .content {
@@ -15,10 +19,7 @@
   flex-direction: column;
 
   @include mobile {
-    padding-bottom: calc(
-      var(--page-padding) + var(--bottom-nav-height) +
-        env(safe-area-inset-bottom)
-    );
+    padding-bottom: calc(var(--page-padding) + env(safe-area-inset-bottom));
   }
 }
 

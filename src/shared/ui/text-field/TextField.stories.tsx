@@ -48,5 +48,5 @@ export const WithError: Story = {
 };
 
 export const Disabled: Story = {
-  args: { disabled: true, defaultValue: 'demo@example.com' },
+  args: { disabled: true, defaultValue: 'alex.johnson@demo.app' },
 };

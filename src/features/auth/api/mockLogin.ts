@@ -1,8 +1,8 @@
 const MOCK_DELAY_MS = 800;
 
 export const DEMO_CREDENTIALS = {
-  email: 'demo@example.com',
-  password: 'demo123',
+  email: 'alex.johnson@demo.app',
+  password: 'kanban2026',
 } as const;
 
 export interface LoginPayload {

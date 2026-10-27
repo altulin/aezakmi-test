@@ -60,7 +60,8 @@
 
   --sidebar-width: #{rem($sidebar-width)};
   --sidebar-width-expanded: #{rem($sidebar-width-expanded)};
-  --bottom-nav-height: #{rem(64)};
+  --mobile-bar-height: #{rem(56)};
+  --sticky-top-offset: 0px;
   --content-max-width: #{rem($content-max-width)};
   --page-padding: #{rem($page-padding)};
   --page-padding-top: #{rem(28)};
@@ -71,6 +72,7 @@
 
 @include mobile {
   :root {
+    --sticky-top-offset: var(--mobile-bar-height);
     --page-padding: #{rem(16)};
     --page-padding-top: #{rem(16)};
   }
