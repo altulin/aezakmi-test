@@ -4,12 +4,10 @@
 .field {
   @include field(var(--radius-field), var(--color-field-auth));
   height: rem(56);
-  padding: 0 rem(20);
 }
 
 .md {
   height: rem(47);
-  padding: 0 rem(16);
   border-radius: var(--radius-lg);
   background-color: var(--color-field);
 }
@@ -18,6 +16,7 @@
   appearance: none;
   width: 100%;
   height: 100%;
+  padding: 0 rem(44) 0 rem(20);
   background: transparent;
   border: none;
   outline: none;
@@ -25,10 +24,10 @@
   font-family: inherit;
   font-size: var(--fs-lg);
   cursor: pointer;
-  padding-right: rem(24);
 }
 
 .md .select {
+  padding: 0 rem(40) 0 rem(16);
   font-size: var(--fs-md);
 }
 
@@ -44,8 +43,87 @@
   pointer-events: none;
   color: var(--color-text-muted);
   font-size: var(--fs-sm);
+  transition: transform var(--transition-fast);
 }
 
 .md .arrow {
   right: rem(16);
+}
+
+@supports (appearance: base-select) {
+  .select,
+  .select::picker(select) {
+    appearance: base-select;
+  }
+
+  .select {
+    display: flex;
+    align-items: center;
+  }
+
+  .select::picker-icon {
+    display: none;
+  }
+
+  .select::picker(select) {
+    margin-top: rem(6);
+    padding: rem(8);
+    border: none;
+    border-radius: var(--radius-field);
+    background-color: var(--color-surface);
+    box-shadow: var(--shadow-panel);
+    opacity: 0;
+    transform: translateY(#{rem(-4)});
+    transition:
+      opacity var(--transition-fast),
+      transform var(--transition-fast),
+      overlay var(--transition-fast) allow-discrete,
+      display var(--transition-fast) allow-discrete;
+  }
+
+  .select:open::picker(select) {
+    opacity: 1;
+    transform: none;
+
+    @starting-style {
+      opacity: 0;
+      transform: translateY(#{rem(-4)});
+    }
+  }
+
+  .select option {
+    display: flex;
+    align-items: center;
+    min-height: rem(44);
+    padding: 0 rem(16);
+    border-radius: var(--radius-md);
+    color: var(--color-text);
+    font-size: var(--fs-md);
+    cursor: pointer;
+    transition: background-color var(--transition-fast);
+  }
+
+  .select option[hidden] {
+    display: none;
+  }
+
+  .select option::checkmark {
+    display: none;
+  }
+
+  .select option:hover,
+  .select option:focus-visible {
+    background-color: var(--color-field);
+    outline: none;
+  }
+
+  .select option:checked {
+    background-color: var(--color-accent-soft);
+    color: var(--color-accent);
+    font-weight: 600;
+  }
+
+  .field:has(.select:open) .arrow {
+    transform: translateY(-50%) rotate(180deg);
+  }
 }
